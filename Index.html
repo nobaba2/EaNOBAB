@@ -5,28 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EaNOBAB - eFootball Esports Portal</title>
   
-  <!-- Modern Clean Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Teko:wght@600;700&display=swap" rel="stylesheet">
-  
-  <!-- Font Awesome 6 Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Teko:wght@600;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
     :root {
-      --bg-main: #060814;
-      --card-bg: rgba(14, 18, 36, 0.72);
+      --ef-cyan: #00f2fe;
+      --ef-blue: #4facfe;
+      --ef-purple: #7928ca;
+      --ef-pink: #ec4899;
+      --ef-gold: #facc15;
+      --ef-green: #25d366;
+      --ef-bg: #070913;
+      --card-bg: rgba(15, 20, 38, 0.75);
       --card-border: rgba(0, 242, 254, 0.16);
-      --card-border-hover: rgba(0, 242, 254, 0.45);
-      --accent-cyan: #00f2fe;
-      --accent-blue: #4facfe;
-      --accent-purple: #7928ca;
-      --accent-yellow: #facc15;
-      --accent-pink: #ec4899;
-      --accent-green: #10b981;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --card-radius: 20px;
     }
 
     * {
@@ -34,104 +29,102 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Hind Siliguri', sans-serif;
-      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
+      background-color: var(--ef-bg);
+      color: #ffffff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 16px 12px 64px;
-      overflow-x: hidden;
       position: relative;
+      overflow-x: hidden;
+      padding: 20px 12px 60px;
     }
 
-    /* Ambient Lighting Mesh */
-    .ambient-bg {
+    .bg-aura {
       position: fixed;
       inset: 0;
-      background: 
-        radial-gradient(circle at 12% 18%, rgba(121, 40, 202, 0.22) 0%, transparent 40%),
-        radial-gradient(circle at 88% 30%, rgba(0, 242, 254, 0.16) 0%, transparent 45%),
-        radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 50%);
+      background: radial-gradient(circle at 10% 10%, rgba(121, 40, 202, 0.3) 0%, transparent 45%),
+                  radial-gradient(circle at 90% 90%, rgba(0, 242, 254, 0.22) 0%, transparent 45%),
+                  radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 55%);
       z-index: -2;
     }
 
     .grid-lines {
       position: fixed;
       inset: 0;
-      background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-image: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
       background-size: 32px 32px;
       z-index: -1;
       pointer-events: none;
     }
 
-    /* Unified Container */
-    .portal-shell {
+    .portal-wrapper {
       width: 100%;
-      max-width: 510px;
+      max-width: 500px;
       background: var(--card-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
-      border-radius: 26px;
+      border-radius: 28px;
       overflow: hidden;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 242, 254, 0.08);
-      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 242, 254, 0.12);
     }
 
-    /* Cover Header */
-    .hero-banner {
+    /* কভার ফটো / লাইভ প্লেয়ার */
+    .cover-box {
       width: 100%;
-      height: 175px;
+      height: 210px;
       position: relative;
       overflow: hidden;
+      background: #000;
     }
 
-    .hero-banner img {
+    #coverImage {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: brightness(0.85);
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: brightness(0.88);
+      display: block;
     }
 
-    .portal-shell:hover .hero-banner img {
-      transform: scale(1.03);
+    #liveCoverFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: none;
     }
 
-    .hero-gradient {
+    .cover-shade {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(6, 8, 20, 0.1) 0%, var(--bg-main) 100%);
+      background: linear-gradient(180deg, rgba(7, 9, 19, 0.05) 0%, var(--ef-bg) 100%);
+      pointer-events: none;
     }
 
-    /* Avatar & Titles */
-    .profile-block {
+    .profile-section {
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-top: -65px;
       position: relative;
       z-index: 2;
-      padding: 0 16px;
+      padding: 0 20px;
     }
 
     .avatar-ring {
       position: relative;
-      width: 120px;
-      height: 120px;
+      width: 124px;
+      height: 124px;
       border-radius: 50%;
-      padding: 3.5px;
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
-      background-size: 200% 200%;
+      padding: 4px;
+      background: linear-gradient(45deg, var(--ef-cyan), var(--ef-purple), var(--ef-gold));
+      background-size: 250% 250%;
       animation: rotateGlow 5s linear infinite;
-      box-shadow: 0 8px 24px rgba(0, 242, 254, 0.4);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
     }
 
     @keyframes rotateGlow {
@@ -146,489 +139,347 @@
       border-radius: 50%;
       object-fit: cover;
       background: #000;
-      border: 3px solid #060814;
+      border: 3px solid #070913;
     }
 
-    /* Live Stream Floating Badge */
-    .live-stream-pill {
-      text-decoration: none;
+    .live-badge-btn {
       position: absolute;
-      bottom: -4px;
-      z-index: 10;
-    }
-
-    .status-badge {
-      background: #059669;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-decoration: none;
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid var(--ef-green);
       color: #fff;
       font-size: 11px;
-      font-weight: 700;
-      padding: 3.5px 12px;
+      font-weight: 800;
+      padding: 3px 12px;
       border-radius: 20px;
       display: flex;
       align-items: center;
       gap: 6px;
-      letter-spacing: 0.6px;
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
-      transition: all 0.25s ease;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      transition: all 0.3s;
     }
 
-    .status-badge.live {
-      background: linear-gradient(135deg, #ef4444, #f43f5e);
-      box-shadow: 0 0 18px rgba(239, 68, 68, 0.85);
-      animation: livePulse 1.6s infinite ease-in-out;
+    .live-badge-btn.live-now {
+      background: linear-gradient(135deg, #ff0055, #ff3300);
+      border-color: #ff0055;
+      box-shadow: 0 0 16px rgba(255, 0, 85, 0.85);
+      animation: livePulse 1.5s infinite;
+      cursor: pointer;
     }
 
-    .dot-ping {
+    .pulse-dot {
       width: 7px;
       height: 7px;
-      background: #fff;
       border-radius: 50%;
+      background: #fff;
     }
 
     @keyframes livePulse {
-      0%, 100% { transform: scale(1); filter: brightness(1); }
-      50% { transform: scale(1.06); filter: brightness(1.2); }
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.06); }
     }
 
-    .brand-name {
+    .creator-name {
       font-family: 'Teko', sans-serif;
-      font-size: 38px;
-      letter-spacing: 2px;
-      margin-top: 10px;
-      line-height: 1;
+      font-size: 34px;
+      letter-spacing: 1.5px;
+      margin-top: 14px;
       text-transform: uppercase;
-      background: linear-gradient(90deg, #ffffff, var(--accent-cyan));
+      background: linear-gradient(90deg, #fff, var(--ef-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      line-height: 1;
     }
 
-    .creator-tag {
-      display: inline-flex;
+    .sub-role {
+      font-size: 12.5px;
+      color: #94a3b8;
+      display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(0, 242, 254, 0.08);
-      border: 1px solid rgba(0, 242, 254, 0.28);
-      color: var(--accent-cyan);
-      padding: 3px 12px;
-      border-radius: 20px;
-      font-size: 12.5px;
-      font-weight: 600;
       margin-top: 5px;
     }
 
-    /* Structured Sections Layout */
-    .portal-body {
-      padding: 18px 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    /* Clean Stats Row */
-    .stats-card {
+    /* ৩-স্ট্যাটস বার */
+    .stats-trio {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 18px 20px 0;
+      padding: 10px;
       background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 18px;
-      padding: 10px 4px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
       text-align: center;
     }
 
-    .stat-box:not(:last-child) {
-      border-right: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .stat-val {
-      font-family: 'Outfit', sans-serif;
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--accent-yellow);
-    }
-
-    .stat-lbl {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
+    .stat-box h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      color: var(--ef-gold);
       letter-spacing: 0.5px;
-      margin-top: 2px;
     }
 
-    /* Welcome Notice Box */
-    .notice-bar {
-      background: rgba(0, 242, 254, 0.04);
-      border-left: 3.5px solid var(--accent-cyan);
-      border-radius: 12px;
+    .stat-box span {
+      font-size: 10.5px;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    /* নোটিশ বার */
+    .notice-card {
+      margin: 14px 20px 0;
       padding: 10px 14px;
+      background: rgba(0, 242, 254, 0.04);
+      border-left: 3px solid var(--ef-cyan);
+      border-radius: 10px;
       font-size: 13.5px;
       color: #e2e8f0;
-      line-height: 1.5;
       text-align: center;
+      line-height: 1.5;
     }
 
-    /* Section Header Common */
-    .section-head {
+    .module-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 22px 20px 10px;
+    }
+
+    .module-title {
       font-size: 14px;
       font-weight: 700;
-      color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 9px;
-      letter-spacing: 0.3px;
-    }
-
-    .section-head i {
-      color: var(--accent-cyan);
-    }
-
-    /* Clean Gift Code Card */
-    .gift-container {
-      background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(0, 242, 254, 0.05));
-      border: 1px dashed rgba(0, 242, 254, 0.35);
-      border-radius: 18px;
-      padding: 14px;
-      position: relative;
-    }
-
-    .gift-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 9px;
-    }
-
-    .gift-badge {
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 9px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent-pink), #f43f5e);
-      color: #fff;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .gift-reward {
-      font-size: 12px;
-      color: var(--accent-yellow);
-      font-weight: 600;
-    }
-
-    .gift-box-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(0, 242, 254, 0.25);
-      border-radius: 12px;
-      padding: 7px 12px;
-      margin-bottom: 9px;
-      gap: 8px;
-    }
-
-    .gift-code-text {
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      color: var(--accent-cyan);
-    }
-
-    .copy-button {
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-      color: #060814;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 12px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s;
-    }
-
-    .copy-button:hover {
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
-    }
-
-    .gift-foot {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 11.5px;
-      color: var(--text-muted);
-    }
-
-    .gift-link-btn {
-      text-decoration: none;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 4px 10px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-weight: 600;
-    }
-
-    .gift-link-btn:hover {
-      background: rgba(255, 255, 255, 0.14);
-      color: var(--accent-cyan);
-    }
-
-    /* Clean Meta Player Showcase */
-    .player-card {
-      background: rgba(18, 22, 45, 0.85);
-      border: 1px solid rgba(250, 204, 21, 0.25);
-      border-radius: 18px;
-      padding: 14px;
-      position: relative;
-    }
-
-    .player-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 11px;
-    }
-
-    .player-tags {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .tag-epic {
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-      color: #fff;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 8px;
-      letter-spacing: 0.5px;
-    }
-
-    .tag-pos {
-      background: rgba(0, 242, 254, 0.12);
-      border: 1px solid rgba(0, 242, 254, 0.35);
-      color: var(--accent-cyan);
-      font-size: 11px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 8px;
-      font-family: 'Outfit', sans-serif;
-    }
-
-    .rating-val {
-      font-family: 'Outfit', sans-serif;
-      font-size: 20px;
-      font-weight: 900;
-      color: var(--accent-yellow);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .player-profile-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .player-photo-slot {
-      width: 72px;
-      height: 72px;
-      border-radius: 12px;
-      border: 1.5px solid rgba(250, 204, 21, 0.35);
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .player-photo-slot img,
-    .player-photo-slot a img {
-      width: 100% !important;
-      height: 100% !important;
-      object-fit: cover !important;
-      display: block !important;
-    }
-
-    .player-meta h4 {
-      font-size: 19px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.2;
-    }
-
-    .player-meta p {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .stats-breakdown-card {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-bottom: 9px;
-    }
-
-    .breakdown-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .breakdown-text {
-      font-size: 13px;
-      color: #e2e8f0;
-      line-height: 1.5;
-      font-family: monospace;
-      white-space: pre-line;
-    }
-
-    .skills-row {
-      background: rgba(236, 72, 153, 0.08);
-      border-left: 3px solid var(--accent-pink);
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-size: 12.5px;
       color: #f1f5f9;
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 10px;
+      gap: 7px;
     }
 
-    /* Telegram CTA Banner inside Player Section */
-    .tg-cta-banner {
-      background: linear-gradient(135deg, rgba(34, 158, 217, 0.12), rgba(121, 40, 202, 0.16));
-      border: 1px solid rgba(34, 158, 217, 0.35);
-      border-radius: 14px;
-      padding: 12px 14px;
+    .module-title i {
+      color: var(--ef-cyan);
+      font-size: 14px;
+    }
+
+    /* গিফট কোড */
+    .redeem-card {
+      margin: 0 20px;
+      background: linear-gradient(135deg, rgba(121, 40, 202, 0.2), rgba(0, 242, 254, 0.12));
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 16px;
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .tg-info {
+    .redeem-info {
       display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 12.5px;
-      color: #e2e8f0;
-      line-height: 1.45;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .tg-info i {
-      color: #229ed9;
-      font-size: 16px;
-      margin-top: 2px;
-    }
-
-    .tg-button {
-      text-decoration: none;
-      background: linear-gradient(90deg, #229ed9, #0088cc);
+    .redeem-text strong {
+      font-size: 14px;
       color: #fff;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 8.5px;
+      display: block;
+    }
+
+    .redeem-text small {
+      font-size: 11.5px;
+      color: #cbd5e1;
+    }
+
+    .code-pill-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .code-display {
+      flex: 1;
+      background: #000;
+      border: 1px dashed var(--ef-gold);
       border-radius: 10px;
+      padding: 8px 12px;
+      font-family: 'Orbitron', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ef-gold);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      letter-spacing: 1px;
+    }
+
+    .btn-copy {
+      background: var(--ef-cyan);
+      border: none;
+      color: #070913;
+      font-weight: 700;
+      padding: 0 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
       transition: all 0.2s;
     }
 
-    .tg-button:hover {
+    .btn-copy:hover {
       filter: brightness(1.15);
-      transform: translateY(-1px);
     }
 
-    /* Video Carousel (3s Auto-Scroll) */
-    .carousel-module {
+    /* ====================================================
+       নতুন: লেটেস্ট eFootball আপডেট সেকশন (১০ সেকেন্ড ক্যারোসেল)
+       ==================================================== */
+    .updates-slider-box {
+      margin: 0 20px;
       position: relative;
-      width: 100%;
-      border-radius: 16px;
+      background: linear-gradient(145deg, rgba(20, 26, 50, 0.85), rgba(12, 16, 32, 0.95));
+      border: 1px solid rgba(0, 242, 254, 0.28);
+      border-radius: var(--card-radius);
       overflow: hidden;
-      border: 1px solid var(--card-border);
-      background: #000;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 242, 254, 0.05);
     }
 
-    .carousel-track {
+    .updates-track {
       display: flex;
       width: 100%;
       transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .carousel-slide {
+    .update-slide {
       min-width: 100%;
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .carousel-slide iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .update-badge-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .update-tag {
+      background: linear-gradient(90deg, #ec4899, #7928ca);
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .update-date {
+      font-size: 11px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .update-title-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .update-media-container {
       width: 100%;
-      height: 100%;
-      border: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      max-height: 220px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .nav-arrow {
+    .update-media-container img {
+      width: 100%;
+      height: auto;
+      max-height: 220px;
+      object-fit: cover;
+    }
+
+    .update-desc-text {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.55;
+      white-space: pre-line;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .update-action-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(0, 242, 254, 0.15);
+      border: 1px solid var(--ef-cyan);
+      color: var(--ef-cyan);
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+
+    .update-action-link:hover {
+      background: var(--ef-cyan);
+      color: #070913;
+    }
+
+    /* আপডেট স্লাইডার কন্ট্রোল বোতাম */
+    .up-arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(6, 8, 20, 0.8);
-      color: var(--accent-cyan);
-      border: 1px solid rgba(0, 242, 254, 0.3);
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
+      background: rgba(7, 9, 19, 0.75);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      color: var(--ef-cyan);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 5;
-      font-size: 13px;
+      font-size: 12px;
+      backdrop-filter: blur(4px);
       transition: all 0.2s;
     }
 
-    .nav-arrow:hover {
-      background: var(--accent-cyan);
-      color: #000;
+    .up-arrow:hover {
+      background: var(--ef-cyan);
+      color: #070913;
     }
 
-    .nav-arrow.left { left: 8px; }
-    .nav-arrow.right { right: 8px; }
+    .up-arrow.prev { left: 8px; }
+    .up-arrow.next { right: 8px; }
 
-    .dots-row {
+    .update-dots-bar {
       display: flex;
       justify-content: center;
       gap: 6px;
       margin-top: 8px;
     }
 
-    .dot-item {
+    .up-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
@@ -637,1214 +488,1463 @@
       transition: all 0.3s;
     }
 
-    .dot-item.active {
+    .up-dot.active {
       width: 20px;
-      border-radius: 8px;
-      background: var(--accent-cyan);
+      border-radius: 10px;
+      background: var(--ef-cyan);
+      box-shadow: 0 0 10px var(--ef-cyan);
     }
 
-    /* Social Connect Grid */
-    .social-matrix {
+    /* টেলিগ্রাম কমিউনিটি ইনভাইট স্ট্রিপ */
+    .tg-invite-strip {
+      margin: 10px 20px 0;
+      text-decoration: none;
+      background: linear-gradient(90deg, rgba(34, 158, 217, 0.18), rgba(121, 40, 202, 0.2));
+      border: 1px dashed rgba(34, 158, 217, 0.4);
+      border-radius: 14px;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #ffffff;
+      transition: all 0.25s;
+    }
+
+    .tg-invite-strip:hover {
+      border-color: #229ed9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(34, 158, 217, 0.25);
+    }
+
+    .tg-icon-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #229ed9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .tg-text-box strong {
+      font-size: 12.5px;
+      display: block;
+      color: #fff;
+    }
+
+    .tg-text-box small {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    /* সোশ্যাল গ্রিড */
+    .social-2col {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 12px;
+      padding: 0 20px;
     }
 
-    .social-tile {
+    .social-tab {
       text-decoration: none;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 14px;
-      padding: 13px 10px;
+      border-radius: 16px;
+      padding: 14px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      color: #ffffff;
-      transition: all 0.25s ease;
+      color: #fff;
+      transition: all 0.25s;
     }
 
-    .social-tile:hover {
-      transform: translateY(-3px);
-      border-color: var(--card-border-hover);
+    .social-tab:hover {
+      transform: translateY(-4px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
-    .social-icon-bubble {
-      width: 44px;
-      height: 44px;
+    .social-ico {
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
+      transition: transform 0.25s;
     }
 
-    .social-title {
+    .social-tab:hover .social-ico {
+      transform: scale(1.1);
+    }
+
+    .social-tab span {
       font-size: 14px;
       font-weight: 600;
     }
 
-    .yt .social-icon-bubble { background: #ff0000; box-shadow: 0 0 14px rgba(255, 0, 0, 0.4); }
-    .fb .social-icon-bubble { background: #1877f2; box-shadow: 0 0 14px rgba(24, 119, 242, 0.4); }
-    .ig .social-icon-bubble { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); box-shadow: 0 0 14px rgba(220, 39, 67, 0.4); }
-    .tt .social-icon-bubble { background: #000; border: 1px solid rgba(255, 255, 255, 0.2); color: #00f2fe; }
+    .yt .social-ico { background: #ff0000; box-shadow: 0 0 14px rgba(255, 0, 0, 0.4); }
+    .fb .social-ico { background: #1877f2; box-shadow: 0 0 14px rgba(24, 119, 242, 0.4); }
+    .ig .social-ico { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); box-shadow: 0 0 14px rgba(220, 39, 67, 0.4); }
+    .tk .social-ico { background: #000; border: 1px solid rgba(255, 255, 255, 0.2); color: #00f2fe; box-shadow: 0 0 14px rgba(0, 242, 254, 0.3); }
 
-    .tg-wide {
+    .tg-full {
       grid-column: span 2;
       flex-direction: row;
       justify-content: center;
-      gap: 12px;
+      gap: 14px;
       padding: 12px 16px;
     }
-    .tg-wide .social-icon-bubble { background: #229ed9; box-shadow: 0 0 14px rgba(34, 158, 217, 0.4); }
+    .tg-full .social-ico { background: #229ed9; box-shadow: 0 0 14px rgba(34, 158, 217, 0.4); }
 
-    /* Action Buttons (1v1 & WhatsApp) */
-    .cta-column {
+    /* ভিডিও স্লাইডার */
+    .slider-container {
+      margin: 0 20px;
+      position: relative;
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      background: #000;
+    }
+
+    .slides-track {
+      display: flex;
+      width: 100%;
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .slide-unit {
+      min-width: 100%;
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+    }
+
+    .slide-unit iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .slide-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(7, 9, 19, 0.7);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      color: var(--ef-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 4;
+      font-size: 13px;
+      transition: all 0.2s;
+      backdrop-filter: blur(4px);
+    }
+
+    .slide-arrow:hover {
+      background: var(--ef-cyan);
+      color: #070913;
+    }
+
+    .slide-arrow.prev { left: 8px; }
+    .slide-arrow.next { right: 8px; }
+
+    .dots-strip {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .dot-node {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot-node.active {
+      width: 20px;
+      border-radius: 10px;
+      background: var(--ef-cyan);
+      box-shadow: 0 0 10px var(--ef-cyan);
+    }
+
+    /* অ্যাকশন বাটন সেকশন */
+    .action-group {
+      padding: 16px 20px 24px;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .challenge-btn {
+    .group-action {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #128c7e, #25d366);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14.5px;
+      box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+      transition: all 0.25s;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .group-action:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
+    }
+
+    .group-action i {
+      font-size: 19px;
+    }
+
+    .wa-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
       width: 100%;
       padding: 13px;
       border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e2e8f0;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.25s;
+    }
+
+    .wa-action:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .portal-footer {
+      text-align: center;
+      padding: 6px 0 0;
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .secret-trigger {
+      cursor: pointer;
+      display: inline-block;
+      padding: 4px 8px;
+    }
+
+    /* একাধিক পপ-আপ কিউ মোডাল */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 998;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+      animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .popup-card {
+      background: #0f1426;
+      border: 1px solid var(--ef-cyan);
+      border-radius: 22px;
+      padding: 22px 18px;
+      max-width: 420px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.35);
+      text-align: center;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .popup-close-x {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .popup-close-x:hover { color: #fff; }
+
+    .popup-counter-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      background: rgba(0, 242, 254, 0.15);
+      color: var(--ef-cyan);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    .popup-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .popup-media {
+      margin-bottom: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      max-height: 220px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+    }
+
+    .popup-media img {
+      max-width: 100%;
+      height: auto;
+      max-height: 220px;
+      object-fit: contain;
+    }
+
+    .popup-text {
+      font-size: 13.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      white-space: pre-line;
+    }
+
+    .popup-action-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, var(--ef-cyan), var(--ef-purple));
       color: #fff;
       text-decoration: none;
       font-weight: 700;
       font-size: 14.5px;
-      box-shadow: 0 6px 18px rgba(236, 72, 153, 0.28);
-      transition: all 0.25s ease;
+      border-radius: 12px;
+      margin-bottom: 8px;
     }
 
-    .challenge-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(236, 72, 153, 0.45);
+    .popup-action-btn:hover {
+      filter: brightness(1.15);
     }
 
-    .wa-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 13px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #ffffff;
-      text-decoration: none;
-      font-size: 14.5px;
-      font-weight: 700;
-      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
-      transition: all 0.25s ease;
-    }
-
-    .wa-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
-    }
-
-    /* Discreet Footer */
-    .footer-wrapper {
-      text-align: center;
-      padding: 6px 0 2px;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.35);
-      user-select: none;
-    }
-
-    .secret-trigger-text {
+    .popup-dismiss-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      padding: 9px 16px;
+      font-size: 12.5px;
+      border-radius: 10px;
       cursor: pointer;
-      display: inline-block;
-      padding: 4px;
-      transition: color 0.2s;
-    }
-    .secret-trigger-text:hover {
-      color: rgba(255, 255, 255, 0.6);
+      width: 100%;
     }
 
-    /* Clean Announcement Popup */
-    .popup-backdrop {
+    /* অ্যাডমিন ড্যাশবোর্ড মোডাল */
+    .admin-overlay {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.88);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      z-index: 1000;
+      z-index: 999;
       justify-content: center;
       align-items: center;
       padding: 16px;
     }
 
-    .popup-box {
-      background: #0d1124;
-      border: 1px solid var(--accent-cyan);
-      border-radius: 22px;
+    .admin-panel {
+      background: #0f1426;
+      border: 1px solid var(--ef-cyan);
       width: 100%;
-      max-width: 430px;
-      overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 242, 254, 0.25);
-    }
-
-    .popup-head {
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .popup-head span {
-      color: var(--accent-yellow);
-      font-weight: 700;
-      font-size: 15px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .popup-x {
-      background: transparent;
-      border: 0;
-      color: #94a3b8;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .popup-x:hover {
-      color: #fff;
-    }
-
-    .popup-content {
-      padding: 16px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-height: 70vh;
+      max-width: 470px;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.3);
+      max-height: 88vh;
       overflow-y: auto;
     }
 
-    .popup-media-wrap {
-      width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .popup-media-wrap img,
-    .popup-media-wrap a img {
-      width: 100% !important;
-      height: auto !important;
-      display: block !important;
-    }
-
-    .popup-desc {
-      color: #e2e8f0;
-      font-size: 14px;
-      line-height: 1.5;
-      white-space: pre-line;
-    }
-
-    .popup-cta-btn {
-      text-decoration: none;
-      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
-      color: #060814;
-      font-weight: 700;
-      font-size: 14px;
-      padding: 11px;
-      border-radius: 10px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    /* Modern Tabbed Admin Modal */
-    .admin-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.94);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      z-index: 1010;
-      justify-content: center;
-      align-items: center;
-      padding: 14px;
-    }
-
-    .admin-frame {
-      background: #0b0f20;
-      border: 1px solid var(--accent-cyan);
-      width: 100%;
-      max-width: 480px;
-      border-radius: 22px;
-      display: flex;
-      flex-direction: column;
-      max-height: 90vh;
-      overflow: hidden;
-      box-shadow: 0 0 40px rgba(0, 242, 254, 0.3);
-    }
-
-    .admin-header {
-      padding: 14px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    .admin-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 14px;
     }
 
-    .admin-header h3 {
-      font-size: 16px;
-      color: var(--accent-cyan);
+    .admin-top h3 {
+      font-size: 17px;
+      color: var(--ef-cyan);
       display: flex;
       align-items: center;
       gap: 7px;
     }
 
-    .admin-tabs-nav {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      background: rgba(0, 0, 0, 0.4);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 4px;
-      gap: 4px;
-    }
-
-    .tab-pill {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      padding: 8px 2px;
-      font-size: 11px;
-      font-weight: 600;
-      border-radius: 8px;
+    .close-btn {
+      color: #94a3b8;
       cursor: pointer;
+      font-size: 18px;
+    }
+
+    .admin-tabs {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      transition: all 0.2s;
+      gap: 5px;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      padding-bottom: 4px;
     }
 
-    .tab-pill i {
-      font-size: 13px;
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
-    .tab-pill.active {
-      color: #060814;
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    .tab-btn.active {
+      background: var(--ef-cyan);
+      color: #070913;
       font-weight: 700;
+      border-color: var(--ef-cyan);
     }
 
-    .admin-body {
-      padding: 16px 18px;
-      overflow-y: auto;
-      flex: 1;
-    }
-
-    .tab-section {
+    .tab-pane {
       display: none;
     }
-
-    .tab-section.active {
+    .tab-pane.active {
       display: block;
     }
 
-    .field-group {
+    .field-box {
       margin-bottom: 12px;
     }
 
-    .field-group label {
+    .field-box label {
       display: block;
       font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
+      color: #94a3b8;
+      margin-bottom: 5px;
     }
 
-    .field-control {
+    .field-input {
       width: 100%;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 9px;
       padding: 9px 11px;
       color: #fff;
-      font-size: 13px;
+      font-size: 13.5px;
       outline: none;
     }
 
-    .field-control:focus {
-      border-color: var(--accent-cyan);
-    }
-
-    .code-style {
-      font-family: monospace;
-      font-size: 12px;
-      color: var(--accent-cyan);
-      background: rgba(0, 0, 0, 0.5);
+    .field-input:focus {
+      border-color: var(--ef-cyan);
     }
 
     .toggle-row {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.035);
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
       padding: 10px 12px;
       border-radius: 10px;
       margin-bottom: 12px;
       font-size: 13px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .admin-foot {
-      padding: 12px 18px;
-      background: rgba(0, 0, 0, 0.5);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn-save {
-      flex: 1;
-      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-      border: 0;
+    .save-action-btn {
+      width: 100%;
+      background: linear-gradient(90deg, var(--ef-cyan), var(--ef-purple));
+      border: none;
       color: #fff;
-      padding: 10px;
+      padding: 11px;
       border-radius: 10px;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 14.5px;
       cursor: pointer;
+      margin-top: 10px;
     }
 
-    .btn-close {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      cursor: pointer;
+    /* অ্যাডমিন ডাইনামিক আইটেম কার্ড */
+    .admin-dynamic-item {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      position: relative;
     }
 
-    /* Toast Notification */
-    .toast-pill {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(30px);
-      background: linear-gradient(90deg, #10b981, #059669);
-      color: #ffffff;
-      padding: 9px 18px;
-      border-radius: 30px;
-      font-weight: 700;
-      font-size: 13px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    .admin-item-header {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 7px;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 9999;
+      margin-bottom: 8px;
     }
 
-    .toast-pill.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
+    .admin-item-header strong {
+      color: var(--ef-cyan);
+      font-size: 13px;
+    }
+
+    .btn-del-item {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .btn-add-item {
+      background: rgba(0, 242, 254, 0.15);
+      border: 1px dashed var(--ef-cyan);
+      color: var(--ef-cyan);
+      width: 100%;
+      padding: 9px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Lighting -->
-  <div class="ambient-bg"></div>
+  <div class="bg-aura"></div>
   <div class="grid-lines"></div>
 
-  <!-- Main Unified Shell -->
-  <main class="portal-shell">
-    
-    <!-- Hero Cover -->
-    <header class="hero-banner">
-      <img src="https://i.ibb.co.com/XZKpx67r/file-000000005bec820b994af6170dabf997.png" alt="EaNOBAB Cover" />
-      <div class="hero-gradient"></div>
-    </header>
+  <div class="portal-wrapper">
+    <!-- কভার ব্যানার ও লাইভ প্লেয়ার -->
+    <div class="cover-box" id="coverContainer">
+      <img id="coverImage" src="https://i.ibb.co.com/XZKpx67r/file-000000005bec820b994af6170dabf997.png" alt="Cover" />
+      <iframe id="liveCoverFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <div class="cover-shade"></div>
+    </div>
 
-    <!-- Profile Area -->
-    <section class="profile-block">
+    <!-- প্রোফাইল জোন -->
+    <div class="profile-section">
       <div class="avatar-ring">
-        <img src="https://i.ibb.co.com/Y7VVkzw8/file-00000000b89081faa13372e4325f97fb.png" alt="EaNOBAB Logo" />
-        
-        <!-- Live Status Floating Link -->
-        <a id="streamBadgeLink" class="live-stream-pill" href="#" target="_blank" rel="noopener noreferrer">
-          <div class="status-badge" id="streamBadge">
-            <span class="dot-ping"></span> <span id="streamStatusText">ACTIVE</span>
-          </div>
+        <img src="https://i.ibb.co.com/Y7VVkzw8/file-00000000b89081faa13372e4325f97fb.png" alt="Logo" />
+        <a id="liveLinkNode" class="live-badge-btn" href="#" target="_blank" rel="noopener noreferrer">
+          <div class="pulse-dot"></div> <span id="liveTextNode">ACTIVE</span>
         </a>
       </div>
-
-      <h1 class="brand-name">EaNOBAB</h1>
-      <div class="creator-tag">
-        <i class="fa-solid fa-gamepad"></i> eFootball Content Creator
+      <h1 class="creator-name">EaNOBAB</h1>
+      <div class="sub-role">
+        <i class="fa-solid fa-gamepad" style="color: var(--ef-cyan);"></i> eFootball Esports Content Creator
       </div>
-    </section>
+    </div>
 
-    <!-- Portal Body Contents -->
-    <div class="portal-body">
+    <!-- ৩-স্ট্যাটস বার -->
+    <div class="stats-trio">
+      <div class="stat-box">
+        <h4 id="statRank">DIV 1</h4>
+        <span>Current Rank</span>
+      </div>
+      <div class="stat-box">
+        <h4 id="statFans">50K+</h4>
+        <span>Community</span>
+      </div>
+      <div class="stat-box">
+        <h4 id="statEvents">100+</h4>
+        <span>Tournaments</span>
+      </div>
+    </div>
+
+    <!-- নোটিশ বার -->
+    <div class="notice-card" id="noticeText">
+      ⚽ স্বাগতম EaNOBAB গেমিং পোর্টালে! প্রতিদিনের eFootball স্কোয়াড টিপস ও গিফট কোড পেতে সাথে থাকুন।
+    </div>
+
+    <!-- গিফট কোড সেকশন -->
+    <div class="module-header">
+      <div class="module-title"><i class="fa-solid fa-gift"></i> সচল গিফট কোড (Redeem Code)</div>
+    </div>
+    <div class="redeem-card" id="giftBox">
+      <div class="redeem-info">
+        <div class="redeem-text">
+          <strong id="giftDesc">Free 100 eFootball Coins</strong>
+          <small id="giftExpiry">মেয়াদ: শীঘ্রই শেষ হবে</small>
+        </div>
+      </div>
+      <div class="code-pill-row">
+        <div class="code-display" id="giftCodeText">EF2026NOBAB</div>
+        <button class="btn-copy" onclick="copyGiftCode()"><i class="fa-regular fa-copy"></i> কপি</button>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         নতুন: লেটেস্ট eFootball আপডেট সেকশন (১০ সেকেন্ড পরপর স্ক্রল)
+         ==================================================== -->
+    <div class="module-header">
+      <div class="module-title"><i class="fa-solid fa-bolt-lightning" style="color: var(--ef-gold);"></i> লেটেস্ট eFootball আপডেট</div>
+    </div>
+    <div class="updates-slider-box" id="updatesSliderNode">
+      <button class="up-arrow prev" onclick="shiftUpdateSlide(-1)" title="আগের আপডেট"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="up-arrow next" onclick="shiftUpdateSlide(1)" title="পরের আপডেট"><i class="fa-solid fa-chevron-right"></i></button>
       
-      <!-- Quick Stats Card -->
-      <section class="stats-card">
-        <div class="stat-box">
-          <div class="stat-val" id="statRank">DIV 1</div>
-          <div class="stat-lbl">Rank</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val" id="statSubs">50K+</div>
-          <div class="stat-lbl">Followers</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val" id="statEvents">100+</div>
-          <div class="stat-lbl">Events</div>
-        </div>
-      </section>
-
-      <!-- Welcome Notice -->
-      <div class="notice-bar" id="portalNotice">
-        ⚽ স্বাগতম EaNOBAB-এর অফিসিয়াল গেমিং পোর্টালে! প্রতিদিনের eFootball স্কোয়াড ট্রেইনিং, রিডিম কোড ও গেমপ্লে টিপস পেতে যুক্ত থাকুন।
+      <div class="updates-track" id="updatesTrack">
+        <!-- আপডেট কার্ডগুলো ডাইনামিকালি লোড হবে -->
       </div>
-
-      <!-- 🎁 Gift / Redeem Code Section -->
-      <section class="gift-container" id="giftCodeSection">
-        <div class="gift-top">
-          <span class="gift-badge">
-            <i class="fa-solid fa-gift"></i> <span id="uiGiftTag">REDEEM CODE</span>
-          </span>
-          <span class="gift-reward" id="uiGiftReward">
-            <i class="fa-solid fa-coins"></i> <span>1000 Coins / Deal</span>
-          </span>
-        </div>
-
-        <div class="gift-box-row">
-          <span class="gift-code-text" id="uiGiftCode">EFOOTBALL2026GOAL</span>
-          <button class="copy-button" onclick="copyGiftCode()">
-            <i class="fa-regular fa-copy"></i> কপি করুন
-          </button>
-        </div>
-
-        <div class="gift-foot">
-          <span id="uiGiftNote"><i class="fa-regular fa-clock"></i> দ্রুত রিডিম করুন</span>
-          <a href="https://my.konami.net/" target="_blank" rel="noopener noreferrer" class="gift-link-btn">
-            Konami পোর্টাল <i class="fa-solid fa-arrow-up-right-from-square"></i>
-          </a>
-        </div>
-      </section>
-
-      <!-- ⚽ Meta Player Training Showcase -->
-      <section class="player-card" id="playerShowcaseSection">
-        <div class="player-header">
-          <div class="player-tags">
-            <span class="tag-epic" id="uiPlayerCardType">EPIC</span>
-            <span class="tag-pos" id="uiPlayerPos">CF</span>
-          </div>
-          <div class="rating-val">
-            <i class="fa-solid fa-bolt" style="font-size: 14px;"></i>
-            <span id="uiPlayerRating">104</span>
-          </div>
-        </div>
-
-        <div class="player-profile-row">
-          <div class="player-photo-slot" id="uiPlayerMediaBox">
-            <i class="fa-solid fa-user-shield" style="font-size: 28px; color: #475569;"></i>
-          </div>
-          <div class="player-meta">
-            <h4 id="uiPlayerName">Lionel Messi</h4>
-            <p id="uiPlayerSubtitle">🔥 Recommended Best Meta Build</p>
-          </div>
-        </div>
-
-        <!-- Progression Points Breakdown -->
-        <div class="stats-breakdown-card">
-          <div class="breakdown-title">
-            <i class="fa-solid fa-sliders"></i> Progression Points Breakdown:
-          </div>
-          <div class="breakdown-text" id="uiPlayerPoints">Shooting: 4 | Passing: 2 | Dribbling: 8
-Dexterity: 8 | Lower Body: 8</div>
-        </div>
-
-        <!-- Recommended Skills -->
-        <div class="skills-row" id="uiSkillsRow">
-          <i class="fa-solid fa-star text-warning"></i>
-          <span><strong>Skills:</strong> <span id="uiPlayerSkills">Double Touch, Sole Control, One-touch Pass</span></span>
-        </div>
-
-        <!-- Telegram Call-to-action Banner -->
-        <div class="tg-cta-banner" id="tgInviteBanner">
-          <div class="tg-info">
-            <i class="fa-brands fa-telegram"></i>
-            <div>
-              <strong>সব কার্ডের সেরা ট্রেইনিং পেতে চান?</strong>
-              <div style="font-size: 11.5px; color: #cbd5e1; margin-top: 2px;">
-                প্রতিদিনের সব Epic ও মেটা প্লেয়ার ট্রেইনিং বিল্ড সবার আগে পেতে আমাদের টেলিগ্রাম চ্যানেলে জয়েন থাকুন!
-              </div>
-            </div>
-          </div>
-          <a href="https://t.me/EaNOBAB" target="_blank" rel="noopener noreferrer" class="tg-button">
-            <i class="fa-solid fa-paper-plane"></i> টেলিগ্রামে জয়েন হয়ে সব ট্রেইনিং দেখুন
-          </a>
-        </div>
-      </section>
-
-      <!-- 🎬 YouTube Carousel (3s Auto-Scroll) -->
-      <section class="video-section">
-        <div class="section-head">
-          <span><i class="fa-solid fa-fire text-danger" style="color: #ff334b;"></i> জনপ্রিয় ও সাম্প্রতিক ভিডিও</span>
-        </div>
-        
-        <div class="carousel-module" id="carouselWrapper">
-          <button class="nav-arrow left" onclick="cycleSlide(-1)" title="Previous">
-            <i class="fa-solid fa-chevron-left"></i>
-          </button>
-          <button class="nav-arrow right" onclick="cycleSlide(1)" title="Next">
-            <i class="fa-solid fa-chevron-right"></i>
-          </button>
-          
-          <div class="carousel-track" id="carouselTrack"></div>
-        </div>
-
-        <div class="dots-row" id="carouselDots"></div>
-      </section>
-
-      <!-- 🌐 Social Matrix -->
-      <section class="social-matrix">
-        <a href="https://youtube.com/@eanobab?si=hCmZ6ptMcAK8PedL" target="_blank" rel="noopener noreferrer" class="social-tile yt">
-          <div class="social-icon-bubble"><i class="fa-brands fa-youtube"></i></div>
-          <span class="social-title">YouTube</span>
-        </a>
-
-        <a href="https://www.facebook.com/Eanobaba" target="_blank" rel="noopener noreferrer" class="social-tile fb">
-          <div class="social-icon-bubble"><i class="fa-brands fa-facebook-f"></i></div>
-          <span class="social-title">Facebook</span>
-        </a>
-
-        <a href="https://www.instagram.com/eanobaba?stkn=NGR1cmJ0bWlhYXBx" target="_blank" rel="noopener noreferrer" class="social-tile ig">
-          <div class="social-icon-bubble"><i class="fa-brands fa-instagram"></i></div>
-          <span class="social-title">Instagram</span>
-        </a>
-
-        <a href="https://vm.tiktok.com/ZS9DXjMvGE1UC-Imczq/" target="_blank" rel="noopener noreferrer" class="social-tile tt">
-          <div class="social-icon-bubble"><i class="fa-brands fa-tiktok"></i></div>
-          <span class="social-title">TikTok</span>
-        </a>
-
-        <a href="https://t.me/EaNOBAB" target="_blank" rel="noopener noreferrer" class="social-tile tg-wide">
-          <div class="social-icon-bubble"><i class="fa-brands fa-telegram"></i></div>
-          <span class="social-title">টেলিগ্রাম টুর্নামেন্ট ও ট্রেইনিং চ্যানেল</span>
-        </a>
-      </section>
-
-      <!-- Action Buttons -->
-      <section class="cta-column">
-        <a href="https://wa.me/8801820729663?text=হ্যালো%20EaNOBAB,%20আমি%20আপনার%20সাথে%20eFootball%201v1%20ফ্রেন্ডলি%20ম্যাচ%20খেলতে%20চাই।" target="_blank" rel="noopener noreferrer" class="challenge-btn">
-          <i class="fa-solid fa-trophy"></i> 1v1 ফ্রেন্ডলি ম্যাচ চ্যালেঞ্জ পাঠান
-        </a>
-
-        <a href="https://wa.me/8801820729663?text=Hello%20EaNOBAB,%20I%20have%20a%20business%20query." target="_blank" rel="noopener noreferrer" class="wa-btn">
-          <i class="fa-brands fa-whatsapp"></i> স্পনসরশিপ ও সাধারণ যোগাযোগ
-        </a>
-      </section>
-
-      <!-- Discreet Footer with Secret 3-Tap Trigger -->
-      <footer class="footer-wrapper">
-        <span class="secret-trigger-text" id="secretAdminTrigger">© 2026 EaNOBAB | eFootball Creator</span>
-      </footer>
-
     </div>
-  </main>
+    <div class="update-dots-bar" id="updatesDotsTrack"></div>
 
-  <!-- User Announcement Modal -->
-  <div class="popup-backdrop" id="announcementPopup">
-    <div class="popup-box">
-      <div class="popup-head">
-        <span><i class="fa-solid fa-bullhorn text-warning"></i> <span id="popTitleView">ঘোষণা</span></span>
-        <button class="popup-x" onclick="dismissPopup()"><i class="fa-solid fa-xmark"></i></button>
+    <!-- টেলিগ্রাম কমিউনিটি ইনভাইট স্ট্রিপ -->
+    <a id="tgBannerLink" href="https://t.me/EaNOBAB" target="_blank" rel="noopener noreferrer" class="tg-invite-strip">
+      <div class="tg-icon-circle"><i class="fa-brands fa-telegram"></i></div>
+      <div class="tg-text-box">
+        <strong>প্রতিদিনের সব আপডেট ও প্লেয়ার বিল্ড পেতে টেলিগ্রামে জয়েন করুন!</strong>
+        <small>নতুন সব Epic, Show Time ও মেটা কার্ড আপডেট চ্যানেলে দেওয়া হয়</small>
       </div>
-      <div class="popup-content">
-        <div class="popup-media-wrap" id="popMediaSlot" style="display: none;"></div>
-        <p class="popup-desc" id="popTextView">...</p>
-        <a id="popLinkBtn" href="#" target="_blank" rel="noopener noreferrer" class="popup-cta-btn" style="display: none;">
-          <span id="popBtnLabel">বিস্তারিত দেখুন</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </a>
+    </a>
+
+    <!-- সোশ্যাল মিডিয়া গ্রিড -->
+    <div class="module-header">
+      <div class="module-title"><i class="fa-solid fa-share-nodes"></i> অফিসিয়াল সোশ্যাল মিডিয়া</div>
+    </div>
+    <div class="social-2col">
+      <a id="ytLink" href="https://youtube.com/@eanobab?si=hCmZ6ptMcAK8PedL" target="_blank" rel="noopener noreferrer" class="social-tab yt">
+        <div class="social-ico"><i class="fa-brands fa-youtube"></i></div>
+        <span>YouTube</span>
+      </a>
+
+      <a id="fbLink" href="https://www.facebook.com/Eanobaba" target="_blank" rel="noopener noreferrer" class="social-tab fb">
+        <div class="social-ico"><i class="fa-brands fa-facebook-f"></i></div>
+        <span>Facebook</span>
+      </a>
+
+      <a id="igLink" href="https://www.instagram.com/eanobaba?stkn=NGR1cmJ0bWlhYXBx" target="_blank" rel="noopener noreferrer" class="social-tab ig">
+        <div class="social-ico"><i class="fa-brands fa-instagram"></i></div>
+        <span>Instagram</span>
+      </a>
+
+      <a id="tkLink" href="https://vm.tiktok.com/ZS9DXjMvGE1UC-Imczq/" target="_blank" rel="noopener noreferrer" class="social-tab tk">
+        <div class="social-ico"><i class="fa-brands fa-tiktok"></i></div>
+        <span>TikTok</span>
+      </a>
+
+      <a id="tgLink" href="https://t.me/EaNOBAB" target="_blank" rel="noopener noreferrer" class="social-tab tg-full">
+        <div class="social-ico"><i class="fa-brands fa-telegram"></i></div>
+        <span>অফিসিয়াল টেলিগ্রাম কমিউনিটি</span>
+      </a>
+    </div>
+
+    <!-- ইউটিউব ভিডিও ক্যারোসেল -->
+    <div class="module-header">
+      <div class="module-title"><i class="fa-solid fa-play"></i> লেটেস্ট গেমপ্লে ও টিপস ভিডিও</div>
+    </div>
+    <div class="slider-container" id="sliderNode">
+      <button class="slide-arrow prev" onclick="shiftSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+      <button class="slide-arrow next" onclick="shiftSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+      <div class="slides-track" id="slidesTrack"></div>
+    </div>
+    <div class="dots-strip" id="dotsTrack"></div>
+
+    <!-- অ্যাকশন বাটন সেকশন -->
+    <div class="action-group">
+      <a id="waGroupBtn" href="https://postimg.cc/VdMmfsqz" target="_blank" rel="noopener noreferrer" class="group-action">
+        <i class="fa-brands fa-whatsapp"></i> ফ্রেন্ডলি ম্যাচের WhatsApp গ্রুপে জয়েন করুন
+      </a>
+
+      <a id="waContactBtn" href="https://wa.me/8801820729663?text=Hello%20EaNOBAB,%20Business%20Query" target="_blank" rel="noopener noreferrer" class="wa-action">
+        <i class="fa-regular fa-comment-dots"></i> স্পনসরশিপ ও পার্সোনাল যোগাযোগ
+      </a>
+
+      <div class="portal-footer">
+        <span class="secret-trigger" id="secretTrigger">© 2026 EaNOBAB | eFootball Creator</span>
       </div>
     </div>
   </div>
 
-  <!-- Admin Modal (5 Categorized Tabs) -->
-  <div class="admin-backdrop" id="adminModalShell">
-    <div class="admin-frame">
-      <div class="admin-header">
-        <h3><i class="fa-solid fa-sliders"></i> EaNOBAB Dashboard</h3>
-        <i class="fa-solid fa-xmark" style="cursor: pointer; color: #94a3b8;" onclick="dismissAdmin()"></i>
-      </div>
-
-      <!-- Navigation Tabs -->
-      <nav class="admin-tabs-nav">
-        <button class="tab-pill active" onclick="activateAdminTab('tabLive')">
-          <i class="fa-solid fa-tower-broadcast"></i>
-          <span>লাইভ</span>
-        </button>
-        <button class="tab-pill" onclick="activateAdminTab('tabGift')">
-          <i class="fa-solid fa-gift"></i>
-          <span>গিফট কোড</span>
-        </button>
-        <button class="tab-pill" onclick="activateAdminTab('tabBuild')">
-          <i class="fa-solid fa-futbol"></i>
-          <span>ট্রেইনিং</span>
-        </button>
-        <button class="tab-pill" onclick="activateAdminTab('tabNotice')">
-          <i class="fa-solid fa-bullhorn"></i>
-          <span>পপ-আপ</span>
-        </button>
-        <button class="tab-pill" onclick="activateAdminTab('tabMedia')">
-          <i class="fa-brands fa-youtube"></i>
-          <span>ভিডিও</span>
-        </button>
-      </nav>
-
-      <!-- Tabs Area -->
-      <div class="admin-body">
-        
-        <!-- Tab 1: Live & Stats -->
-        <div class="tab-section active" id="tabLive">
-          <div class="toggle-row">
-            <span>🔴 লাইভ স্ট্রিম স্ট্যাটাস চালু রাখুন:</span>
-            <input type="checkbox" id="admLiveSwitch" style="width: 18px; height: 18px; cursor: pointer;">
-          </div>
-          <div class="field-group">
-            <label>লাইভ স্ট্রিমের ডিরেক্ট লিংক:</label>
-            <input type="text" id="admLiveUrl" class="field-control" placeholder="https://youtube.com/live/xxx">
-          </div>
-          <div class="field-group">
-            <label>ওয়েলকাম নোটিশ টেক্সট:</label>
-            <textarea id="admNoticeText" class="field-control" rows="2"></textarea>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <div class="field-group">
-              <label>র‍্যাঙ্ক (যেমন: DIV 1):</label>
-              <input type="text" id="admRank" class="field-control">
-            </div>
-            <div class="field-group">
-              <label>ফলোয়ার সংখ্যা:</label>
-              <input type="text" id="admSubs" class="field-control">
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab 2: Gift Code -->
-        <div class="tab-section" id="tabGift">
-          <div class="toggle-row">
-            <span>গিফট কোড সেকশন প্রদর্শন করুন:</span>
-            <input type="checkbox" id="admGiftEnable" style="width: 18px; height: 18px; cursor: pointer;">
-          </div>
-          <div class="field-group">
-            <label>রিডিম কোড:</label>
-            <input type="text" id="admGiftCode" class="field-control code-style">
-          </div>
-          <div class="field-group">
-            <label>রিওয়ার্ড বা অফার বিবরণ:</label>
-            <input type="text" id="admGiftReward" class="field-control">
-          </div>
-          <div class="field-group">
-            <label>ট্যাগ ব্যাজ টেক্সট:</label>
-            <input type="text" id="admGiftTag" class="field-control">
-          </div>
-          <div class="field-group">
-            <label>মেয়াদ বা নোট:</label>
-            <input type="text" id="admGiftNote" class="field-control">
-          </div>
-        </div>
-
-        <!-- Tab 3: Meta Training Build -->
-        <div class="tab-section" id="tabBuild">
-          <div class="toggle-row">
-            <span>প্লেয়ার ট্রেইনিং সেকশন প্রদর্শন করুন:</span>
-            <input type="checkbox" id="admBuildEnable" style="width: 18px; height: 18px; cursor: pointer;">
-          </div>
-          <div class="field-group">
-            <label>প্লেয়ারের নাম:</label>
-            <input type="text" id="admPlayerName" class="field-control">
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
-            <div class="field-group">
-              <label>পজিশন:</label>
-              <input type="text" id="admPlayerPos" class="field-control">
-            </div>
-            <div class="field-group">
-              <label>কার্ড টাইপ:</label>
-              <input type="text" id="admPlayerCardType" class="field-control">
-            </div>
-            <div class="field-group">
-              <label>রেটিং:</label>
-              <input type="text" id="admPlayerRating" class="field-control">
-            </div>
-          </div>
-          <div class="field-group">
-            <label>পয়েন্ট ব্রেকডাউন:</label>
-            <textarea id="admPlayerPoints" class="field-control code-style" rows="3"></textarea>
-          </div>
-          <div class="field-group">
-            <label>প্রয়োজনীয় স্কিলস:</label>
-            <input type="text" id="admPlayerSkills" class="field-control">
-          </div>
-          <div class="field-group">
-            <label>কার্ডের ছবি / HTML কোড:</label>
-            <textarea id="admPlayerHtml" class="field-control code-style" rows="2" placeholder='<img src="..." alt="player">'></textarea>
-          </div>
-          <div class="toggle-row">
-            <span>টেলিগ্রাম চ্যানেল ইনভাইট ব্যানার প্রদর্শন করুন:</span>
-            <input type="checkbox" id="admTgBannerEnable" style="width: 18px; height: 18px; cursor: pointer;">
-          </div>
-        </div>
-
-        <!-- Tab 4: Announcement Popup -->
-        <div class="tab-section" id="tabNotice">
-          <div class="toggle-row">
-            <span>পপ-আপ সক্রিয় রাখুন:</span>
-            <input type="checkbox" id="admPopEnable" style="width: 18px; height: 18px; cursor: pointer;">
-          </div>
-          <div class="field-group">
-            <label>পপ-আপ শিরোনাম:</label>
-            <input type="text" id="admPopTitle" class="field-control">
-          </div>
-          <div class="field-group">
-            <label>পপ-আপ বিস্তারিত টেক্সট:</label>
-            <textarea id="admPopText" class="field-control" rows="2"></textarea>
-          </div>
-          <div class="field-group">
-            <label>ব্যানার HTML কোড (Image):</label>
-            <textarea id="admPopHtml" class="field-control code-style" rows="2"></textarea>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <div class="field-group">
-              <label>বাটনের নাম:</label>
-              <input type="text" id="admPopBtnLabel" class="field-control">
-            </div>
-            <div class="field-group">
-              <label>বাটনের লিংক:</label>
-              <input type="text" id="admPopBtnUrl" class="field-control">
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab 5: Videos -->
-        <div class="tab-section" id="tabMedia">
-          <div class="field-group">
-            <label>ইউটিউব ভিডিও লিংকসমূহ (কমা ',' দিয়ে আলাদা করুন):</label>
-            <textarea id="admVideoLinks" class="field-control code-style" rows="4" placeholder="https://youtu.be/xxx, https://youtu.be/yyy"></textarea>
-            <span style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">
-              ৩ সেকেন্ড পর পর অটো-স্ক্রল হবে। ইউজার ব্যাক বা ফরোয়ার্ডও করতে পারবে।
-            </span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Action Footer -->
-      <div class="admin-foot">
-        <button class="btn-close" onclick="dismissAdmin()">বাতিল</button>
-        <button class="btn-save" onclick="commitAdminSettings()">
-          <i class="fa-solid fa-floppy-disk"></i> পরিবর্তনসমূহ সেভ করুন
-        </button>
-      </div>
+  <!-- ডাইনামিক সিকোয়েনশিয়াল পপ-আপ মোডাল -->
+  <div class="popup-overlay" id="popupQueueModal">
+    <div class="popup-card">
+      <i class="fa-solid fa-xmark popup-close-x" onclick="dismissCurrentPopup()" title="বন্ধ করুন"></i>
+      <span class="popup-counter-badge" id="popupQueueBadge">বিজ্ঞপ্তি ১/১</span>
+      <h3 class="popup-title" id="popupQueueTitle">জরুরি ঘোষণা</h3>
+      <div class="popup-media" id="popupQueueMedia"></div>
+      <div class="popup-text" id="popupQueueText"></div>
+      <a id="popupQueueActionBtn" href="#" target="_blank" rel="noopener noreferrer" class="popup-action-btn" style="display: none;">বিস্তারিত দেখুন</a>
+      <button class="popup-dismiss-btn" onclick="dismissCurrentPopup()">পরের বিজ্ঞপ্তি / বন্ধ করুন</button>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div class="toast-pill" id="actionToast">
-    <i class="fa-solid fa-circle-check"></i>
-    <span id="toastNoticeText">কপি করা হয়েছে!</span>
+  <!-- লুকানো এডমিন ড্যাশবোর্ড -->
+  <div class="admin-overlay" id="adminModal">
+    <div class="admin-panel">
+      <div class="admin-top">
+        <h3><i class="fa-solid fa-sliders"></i> কন্ট্রোল প্যানেল</h3>
+        <i class="fa-solid fa-xmark close-btn" onclick="closeAdmin()"></i>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="switchAdminTab('tab-live', this)">লাইভ ও স্ট্যাটস</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-updates', this)">আপডেট কন্ট্রোল (১০ সে.)</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-popups', this)">পপ-আপ কিউ</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-code', this)">গিফট কোড</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-video', this)">ভিডিও স্লাইডার</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-links', this)">লিংক কন্ট্রোল</button>
+      </div>
+
+      <!-- ট্যাব ১: লাইভ ও স্ট্যাটস -->
+      <div class="tab-pane active" id="tab-live">
+        <div class="toggle-row">
+          <span>🔴 লাইভ স্ট্রিম সক্রিয় করুন:</span>
+          <input type="checkbox" id="inputLiveToggle" style="width: 18px; height: 18px;">
+        </div>
+        <div class="field-box">
+          <label>লাইভ স্ট্রিম ভিডিও লিংক বা ID:</label>
+          <input type="text" id="inputLiveUrl" class="field-input" placeholder="https://youtube.com/live/xxxx অথবা Video ID">
+        </div>
+        <div class="field-box">
+          <label>ওয়েলকাম নোটিশ:</label>
+          <textarea id="inputNotice" class="field-input" rows="2"></textarea>
+        </div>
+        <div class="field-box">
+          <label>ডিভিশন র‍্যাঙ্ক (DIV 1):</label>
+          <input type="text" id="inputRank" class="field-input">
+        </div>
+        <div class="field-box">
+          <label>কমিউনিটি সংখ্যা (50K+):</label>
+          <input type="text" id="inputFans" class="field-input">
+        </div>
+      </div>
+
+      <!-- ট্যাব ২: একাধিক eFootball আপডেট কন্ট্রোল (১০ সেকেন্ড স্ক্রল) -->
+      <div class="tab-pane" id="tab-updates">
+        <div style="margin-bottom: 10px; font-size: 12px; color: #94a3b8;">
+          এখানে আপনি একসাথে একাধিক নতুন আপডেট যোগ করতে পারবেন। ওয়েবসাইটে প্রতি ১০ সেকেন্ড পর পর একটি করে স্বয়ংক্রিয়ভাবে স্ক্রল হবে।
+        </div>
+        <button type="button" class="btn-add-item" onclick="addNewUpdateSlot()"><i class="fa-solid fa-plus"></i> নতুন আপডেট যোগ করুন</button>
+        <div id="updatesListContainer"></div>
+      </div>
+
+      <!-- ট্যাব ৩: পপ-আপ কিউ -->
+      <div class="tab-pane" id="tab-popups">
+        <div class="toggle-row">
+          <span>📢 ৫-সেকেন্ড পপ-আপ কিউ চালু রাখুন:</span>
+          <input type="checkbox" id="inputPopupsEnabled" style="width: 18px; height: 18px;">
+        </div>
+        <button type="button" class="btn-add-item" onclick="addNewPopupSlot()"><i class="fa-solid fa-plus"></i> নতুন পপ-আপ যোগ করুন</button>
+        <div id="popupsListContainer"></div>
+      </div>
+
+      <!-- ট্যাব ৪: গিফট কোড -->
+      <div class="tab-pane" id="tab-code">
+        <div class="field-box">
+          <label>রিডিম কোড:</label>
+          <input type="text" id="inputGiftCode" class="field-input">
+        </div>
+        <div class="field-box">
+          <label>রিওয়ার্ড বিবরণ:</label>
+          <input type="text" id="inputGiftDesc" class="field-input">
+        </div>
+        <div class="field-box">
+          <label>মেয়াদ তথ্য:</label>
+          <input type="text" id="inputGiftExpiry" class="field-input">
+        </div>
+      </div>
+
+      <!-- ট্যাব ৫: ভিডিও স্লাইডার -->
+      <div class="tab-pane" id="tab-video">
+        <div class="field-box">
+          <label>ইউটিউব ভিডিও লিংকসমূহ (কমা ',' দিয়ে আলাদা করুন):</label>
+          <textarea id="inputVideos" class="field-input" rows="4"></textarea>
+        </div>
+      </div>
+
+      <!-- ট্যাব ৬: সম্পূর্ণ লিংক কন্ট্রোল -->
+      <div class="tab-pane" id="tab-links">
+        <div class="field-box">
+          <label><i class="fa-brands fa-youtube" style="color: #ff0000;"></i> ইউটিউব চ্যানেল লিংক:</label>
+          <input type="text" id="inputYtUrl" class="field-input">
+        </div>
+        <div class="field-box">
+          <label><i class="fa-brands fa-facebook" style="color: #1877f2;"></i> ফেসবুক পেজ লিংক:</label>
+          <input type="text" id="inputFbUrl" class="field-input">
+        </div>
+        <div class="field-box">
+          <label><i class="fa-brands fa-instagram" style="color: #e1306c;"></i> ইনস্টাগ্রাম প্রোফাইল লিংক:</label>
+          <input type="text" id="inputIgUrl" class="field-input">
+        </div>
+        <div class="field-box">
+          <label><i class="fa-brands fa-tiktok" style="color: #00f2fe;"></i> টিকটক প্রোফাইল লিংক:</label>
+          <input type="text" id="inputTkUrl" class="field-input">
+        </div>
+        <div class="field-box">
+          <label><i class="fa-brands fa-telegram" style="color: #229ed9;"></i> টেলিগ্রাম চ্যানেল লিংক:</label>
+          <input type="text" id="inputTgUrl" class="field-input">
+        </div>
+        <div class="field-box">
+          <label><i class="fa-brands fa-whatsapp" style="color: #25d366;"></i> ফ্রেন্ডলি ম্যাচ হোয়াটসঅ্যাপ গ্রুপ ইনভাইট লিংক:</label>
+          <input type="text" id="inputGroupUrl" class="field-input">
+        </div>
+        <div class="field-box">
+          <label><i class="fa-solid fa-phone" style="color: #25d366;"></i> পার্সোনাল হোয়াটসঅ্যাপ লিংক বা নম্বর:</label>
+          <input type="text" id="inputWaContactUrl" class="field-input">
+        </div>
+      </div>
+
+      <button class="save-action-btn" onclick="saveAllSettings()">সেভ ও আপডেট করুন</button>
+    </div>
   </div>
 
-  <!-- Client Script Logic -->
   <script>
-    const SECRET_PIN = "nobab123";
+    const ADMIN_PIN = "nobab123";
 
-    let activeVideos = [
+    // ডিফল্ট আপডেট লিস্ট (১০ সেকেন্ড পর পর একা একা স্ক্রল হবে)
+    let updatesQueue = [
+      {
+        tag: "NEW PACK",
+        date: "আজকের আপডেট",
+        title: "🔥 Epic: Barcelona Guardians প্যাক যুক্ত হয়েছে!",
+        media: "<img src='https://i.ibb.co.com/XZKpx67r/file-000000005bec820b994af6170dabf997.png' alt='Update'>",
+        desc: "এই সপ্তাহের নতুন থার্সডে আপডেটে চমৎকার মেটা প্লেয়ার এসেছে। প্লেয়ারদের সেরা ট্রেইনিং বিল্ড ও রিভিউ আমাদের টেলিগ্রামে পেয়ে যাবেন।",
+        btnText: "টেলিগ্রামে বিস্তারিত দেখুন",
+        btnLink: "https://t.me/EaNOBAB"
+      },
+      {
+        tag: "MAINTENANCE",
+        date: "পরবর্তী আপডেট",
+        title: "⚽ নতুন সিজন ইভেন্ট ও ফ্রি রিওয়ার্ডস ঘোষণা",
+        media: "",
+        desc: "নতুন ক্যাম্পেইন লগইন বোনাস এবং বিশেষ ট্যুর ইভেন্ট চালু হয়েছে। ফ্রি কয়েন ও স্কিল ট্রেইনিং মিস করবেন না!",
+        btnText: "গ্রুপে আলোচনা করুন",
+        btnLink: "https://postimg.cc/VdMmfsqz"
+      }
+    ];
+
+    let currentUpdateIndex = 0;
+    let autoUpdateTimer = null;
+
+    // পপ-আপ কিউ
+    let popupsQueue = [
+      {
+        title: "🔥 eFootball নতুন টুর্নামেন্ট ও স্কোয়াড আপডেট!",
+        media: "<img src='https://i.ibb.co.com/Y7VVkzw8/file-00000000b89081faa13372e4325f97fb.png' alt='Notice'>",
+        text: "আজকের স্পেশাল ফ্রেন্ডলি টুর্নামেন্টে অংশ নিতে এখনই আমাদের হোয়াটসঅ্যাপ গ্রুপে জয়েন করুন!",
+        btnText: "গ্রুপে জয়েন করুন",
+        btnLink: "https://postimg.cc/VdMmfsqz"
+      }
+    ];
+
+    let currentPopupIndex = 0;
+
+    // ভিডিও লিস্ট
+    let videoArray = [
       "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
       "https://www.youtube.com/watch?v=3JZ_D3ELwOQ",
       "https://www.youtube.com/watch?v=2Vv-BfVoq4g"
     ];
 
     let currentSlide = 0;
-    let carouselInterval = null;
+    let autoSlideTimer = null;
 
-    // Toast Helper
-    function triggerToast(text) {
-      const toast = document.getElementById("actionToast");
-      document.getElementById("toastNoticeText").innerText = text;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    // 1-Click Gift Code Copy
-    function copyGiftCode() {
-      const code = document.getElementById("uiGiftCode").innerText;
-      const el = document.createElement("textarea");
-      el.value = code;
-      document.body.appendChild(el);
-      el.select();
-      try {
-        document.execCommand("copy");
-        triggerToast("গিফট কোড কপি করা হয়েছে: " + code);
-      } catch (e) {
-        triggerToast("ম্যানুয়ালি কোডটি কপি করুন!");
-      }
-      document.body.removeChild(el);
-    }
-
-    // Extract YouTube ID
-    function getYoutubeId(link) {
-      if (!link) return "";
+    function extractVidId(url) {
+      if (!url) return "";
       const reg = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-      const match = link.trim().match(reg);
-      return (match && match[2].length === 11) ? match[2] : link.trim();
+      const m = url.trim().match(reg);
+      return (m && m[2].length === 11) ? m[2] : url.trim();
     }
 
-    // Carousel Rendering
-    function buildCarousel() {
-      const track = document.getElementById("carouselTrack");
-      const dots = document.getElementById("carouselDots");
+    // ==========================================
+    // আপডেট স্লাইডার রেন্ডার ও ১০ সেকেন্ড স্ক্রল লজিক
+    // ==========================================
+    function renderUpdatesSlider() {
+      const track = document.getElementById("updatesTrack");
+      const dots = document.getElementById("updatesDotsTrack");
       track.innerHTML = "";
       dots.innerHTML = "";
 
-      activeVideos.forEach((vUrl, i) => {
-        const id = getYoutubeId(vUrl);
+      if (updatesQueue.length === 0) {
+        track.innerHTML = "<div class='update-slide'><div class='update-title-text' style='text-align:center;'>বর্তমানে কোনো আপডেট নেই</div></div>";
+        return;
+      }
+
+      updatesQueue.forEach((item, idx) => {
+        const slide = document.createElement("div");
+        slide.className = "update-slide";
+
+        let mediaHtml = "";
+        if (item.media && item.media.trim() !== "") {
+          if (item.media.includes("<img") || item.media.includes("<a")) {
+            mediaHtml = `<div class="update-media-container">${item.media}</div>`;
+          } else {
+            mediaHtml = `<div class="update-media-container"><img src="${item.media}" alt="Update Image"></div>`;
+          }
+        }
+
+        let btnHtml = "";
+        if (item.btnLink && item.btnLink.trim() !== "") {
+          btnHtml = `<a href="${item.btnLink}" target="_blank" rel="noopener noreferrer" class="update-action-link">${item.btnText || "বিস্তারিত দেখুন"} <i class="fa-solid fa-arrow-right"></i></a>`;
+        }
+
+        slide.innerHTML = `
+          <div class="update-badge-bar">
+            <span class="update-tag">${item.tag || "UPDATE"}</span>
+            <span class="update-date"><i class="fa-regular fa-clock"></i> ${item.date || "সম্প্রতি"}</span>
+          </div>
+          <div class="update-title-text">${item.title || "নতুন আপডেট"}</div>
+          ${mediaHtml}
+          <div class="update-desc-text">${item.desc || ""}</div>
+          ${btnHtml}
+        `;
+        track.appendChild(slide);
+
+        const dot = document.createElement("div");
+        dot.className = `up-dot ${idx === 0 ? "active" : ""}`;
+        dot.onclick = () => goToUpdateSlide(idx);
+        dots.appendChild(dot);
+      });
+
+      currentUpdateIndex = 0;
+      refreshUpdateSlidePos();
+      startAutoUpdateSlide();
+    }
+
+    function refreshUpdateSlidePos() {
+      const track = document.getElementById("updatesTrack");
+      track.style.transform = `translateX(-${currentUpdateIndex * 100}%)`;
+      const dots = document.querySelectorAll(".up-dot");
+      dots.forEach((d, i) => d.classList.toggle("active", i === currentUpdateIndex));
+    }
+
+    function shiftUpdateSlide(step) {
+      if (updatesQueue.length <= 1) return;
+      currentUpdateIndex = (currentUpdateIndex + step + updatesQueue.length) % updatesQueue.length;
+      refreshUpdateSlidePos();
+      resetUpdateTimer();
+    }
+
+    function goToUpdateSlide(idx) {
+      currentUpdateIndex = idx;
+      refreshUpdateSlidePos();
+      resetUpdateTimer();
+    }
+
+    function startAutoUpdateSlide() {
+      stopAutoUpdateSlide();
+      if (updatesQueue.length > 1) {
+        autoUpdateTimer = setInterval(() => {
+          shiftUpdateSlide(1);
+        }, 10000); // ঠিক ১০ সেকেন্ড পর পর
+      }
+    }
+
+    function stopAutoUpdateSlide() {
+      if (autoUpdateTimer) clearInterval(autoUpdateTimer);
+    }
+
+    function resetUpdateTimer() {
+      stopAutoUpdateSlide();
+      startAutoUpdateSlide();
+    }
+
+    const updatesBox = document.getElementById("updatesSliderNode");
+    updatesBox.addEventListener("mouseenter", stopAutoUpdateSlide);
+    updatesBox.addEventListener("mouseleave", startAutoUpdateSlide);
+
+    // ==========================================
+    // ইউটিউব ভিডিও স্লাইডার
+    // ==========================================
+    function initSlider() {
+      const track = document.getElementById("slidesTrack");
+      const dots = document.getElementById("dotsTrack");
+      track.innerHTML = "";
+      dots.innerHTML = "";
+
+      videoArray.forEach((link, idx) => {
+        const id = extractVidId(link);
         if (!id) return;
 
         const slide = document.createElement("div");
-        slide.className = "carousel-slide";
+        slide.className = "slide-unit";
         slide.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?enablejsapi=1" allowfullscreen loading="lazy"></iframe>`;
         track.appendChild(slide);
 
         const dot = document.createElement("div");
-        dot.className = `dot-item ${i === 0 ? "active" : ""}`;
-        dot.onclick = () => selectSlide(i);
+        dot.className = `dot-node ${idx === 0 ? "active" : ""}`;
+        dot.onclick = () => goToSlide(idx);
         dots.appendChild(dot);
       });
 
       currentSlide = 0;
-      refreshSlidePosition();
-      startSlideLoop();
+      refreshSlidePos();
+      runAutoSlide();
     }
 
-    function refreshSlidePosition() {
-      const track = document.getElementById("carouselTrack");
+    function refreshSlidePos() {
+      const track = document.getElementById("slidesTrack");
       track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      const dots = document.querySelectorAll(".dot-node");
+      dots.forEach((d, i) => d.classList.toggle("active", i === currentSlide));
+    }
 
-      document.querySelectorAll(".dot-item").forEach((d, idx) => {
-        d.classList.toggle("active", idx === currentSlide);
+    function shiftSlide(step) {
+      if (videoArray.length <= 1) return;
+      currentSlide = (currentSlide + step + videoArray.length) % videoArray.length;
+      refreshSlidePos();
+      resetTimer();
+    }
+
+    function goToSlide(idx) {
+      currentSlide = idx;
+      refreshSlidePos();
+      resetTimer();
+    }
+
+    function runAutoSlide() {
+      stopAutoSlide();
+      if (videoArray.length > 1) {
+        autoSlideTimer = setInterval(() => { shiftSlide(1); }, 3000);
+      }
+    }
+
+    function stopAutoSlide() {
+      if (autoSlideTimer) clearInterval(autoSlideTimer);
+    }
+
+    function resetTimer() {
+      stopAutoSlide();
+      runAutoSlide();
+    }
+
+    const sliderBox = document.getElementById("sliderNode");
+    sliderBox.addEventListener("mouseenter", stopAutoSlide);
+    sliderBox.addEventListener("mouseleave", runAutoSlide);
+
+    function copyGiftCode() {
+      const code = document.getElementById("giftCodeText").innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        alert("গিফট কোড কপি করা হয়েছে: " + code);
       });
     }
 
-    function cycleSlide(dir) {
-      const total = activeVideos.length;
-      if (total <= 1) return;
-      currentSlide = (currentSlide + dir + total) % total;
-      refreshSlidePosition();
-      restartSlideLoop();
+    function triggerPopupQueue() {
+      const isEnabled = localStorage.getItem("ea_popups_enabled") !== "false";
+      if (!isEnabled || popupsQueue.length === 0) return;
+
+      setTimeout(() => {
+        currentPopupIndex = 0;
+        showPopupByIndex(currentPopupIndex);
+      }, 5000);
     }
 
-    function selectSlide(idx) {
-      currentSlide = idx;
-      refreshSlidePosition();
-      restartSlideLoop();
+    function showPopupByIndex(idx) {
+      if (idx >= popupsQueue.length) {
+        document.getElementById("popupQueueModal").style.display = "none";
+        return;
+      }
+
+      const item = popupsQueue[idx];
+      document.getElementById("popupQueueBadge").innerText = `বিজ্ঞপ্তি ${idx + 1}/${popupsQueue.length}`;
+      document.getElementById("popupQueueTitle").innerText = item.title || "জরুরি নোটিশ";
+      document.getElementById("popupQueueText").innerText = item.text || "";
+
+      const mediaBox = document.getElementById("popupQueueMedia");
+      if (item.media && item.media.trim() !== "") {
+        mediaBox.style.display = "flex";
+        if (item.media.includes("<img") || item.media.includes("<a")) {
+          mediaBox.innerHTML = item.media;
+        } else {
+          mediaBox.innerHTML = `<img src="${item.media}" alt="Popup Media">`;
+        }
+      } else {
+        mediaBox.style.display = "none";
+        mediaBox.innerHTML = "";
+      }
+
+      const actionBtn = document.getElementById("popupQueueActionBtn");
+      if (item.btnLink && item.btnLink.trim() !== "") {
+        actionBtn.style.display = "block";
+        actionBtn.href = item.btnLink;
+        actionBtn.innerText = item.btnText || "বিস্তারিত দেখুন";
+      } else {
+        actionBtn.style.display = "none";
+      }
+
+      document.getElementById("popupQueueModal").style.display = "flex";
     }
 
-    function startSlideLoop() {
-      haltSlideLoop();
-      if (activeVideos.length > 1) {
-        carouselInterval = setInterval(() => cycleSlide(1), 3000);
+    function dismissCurrentPopup() {
+      currentPopupIndex++;
+      if (currentPopupIndex < popupsQueue.length) {
+        showPopupByIndex(currentPopupIndex);
+      } else {
+        document.getElementById("popupQueueModal").style.display = "none";
       }
     }
 
-    function haltSlideLoop() {
-      if (carouselInterval) clearInterval(carouselInterval);
-    }
-
-    function restartSlideLoop() {
-      haltSlideLoop();
-      startSlideLoop();
-    }
-
-    const wrapper = document.getElementById("carouselWrapper");
-    wrapper.addEventListener("mouseenter", haltSlideLoop);
-    wrapper.addEventListener("mouseleave", startSlideLoop);
-
-    // Load Data to UI
-    function initPortalData() {
+    function loadPortalData() {
       const isLive = localStorage.getItem("ea_live") === "true";
-      const liveLink = localStorage.getItem("ea_live_url") || "https://youtube.com/@eanobab/live";
-      const storedVideos = localStorage.getItem("ea_videos");
-      const notice = localStorage.getItem("ea_msg");
+      const liveRaw = localStorage.getItem("ea_live_url") || "";
+      const notice = localStorage.getItem("ea_notice");
       const rank = localStorage.getItem("ea_rank");
-      const subs = localStorage.getItem("ea_subs");
+      const fans = localStorage.getItem("ea_fans");
 
-      // Live Stream Badge
-      const badge = document.getElementById("streamBadge");
-      const text = document.getElementById("streamStatusText");
-      const link = document.getElementById("streamBadgeLink");
+      const code = localStorage.getItem("ea_gift_code");
+      const desc = localStorage.getItem("ea_gift_desc");
+      const expiry = localStorage.getItem("ea_gift_expiry");
 
-      if (isLive) {
-        badge.classList.add("live");
-        text.innerText = "🔴 LIVE NOW";
-        link.href = liveLink;
-        link.style.pointerEvents = "auto";
+      // আপডেট কিউ লোড
+      const savedUpdates = localStorage.getItem("ea_updates_queue");
+      if (savedUpdates) {
+        try {
+          const parsed = JSON.parse(savedUpdates);
+          if (Array.isArray(parsed) && parsed.length > 0) updatesQueue = parsed;
+        } catch (e) {}
+      }
+      renderUpdatesSlider();
+
+      // পপ-আপ তালিকা লোড
+      const savedPopups = localStorage.getItem("ea_popups_queue");
+      if (savedPopups) {
+        try {
+          const parsed = JSON.parse(savedPopups);
+          if (Array.isArray(parsed) && parsed.length > 0) popupsQueue = parsed;
+        } catch (e) {}
+      }
+
+      const ytLink = localStorage.getItem("ea_yt_url") || "https://youtube.com/@eanobab?si=hCmZ6ptMcAK8PedL";
+      const fbLink = localStorage.getItem("ea_fb_url") || "https://www.facebook.com/Eanobaba";
+      const igLink = localStorage.getItem("ea_ig_url") || "https://www.instagram.com/eanobaba?stkn=NGR1cmJ0bWlhYXBx";
+      const tkLink = localStorage.getItem("ea_tk_url") || "https://vm.tiktok.com/ZS9DXjMvGE1UC-Imczq/";
+      const tgLink = localStorage.getItem("ea_tg_url") || "https://t.me/EaNOBAB";
+      const groupLink = localStorage.getItem("ea_group_url") || "https://postimg.cc/VdMmfsqz";
+      let waContact = localStorage.getItem("ea_wa_contact") || "https://wa.me/8801820729663?text=Hello%20EaNOBAB,%20Business%20Query";
+
+      if (waContact && !waContact.startsWith("http")) {
+        waContact = "https://wa.me/" + waContact.replace(/[^0-9]/g, "");
+      }
+
+      if (document.getElementById("ytLink")) document.getElementById("ytLink").href = ytLink;
+      if (document.getElementById("fbLink")) document.getElementById("fbLink").href = fbLink;
+      if (document.getElementById("igLink")) document.getElementById("igLink").href = igLink;
+      if (document.getElementById("tkLink")) document.getElementById("tkLink").href = tkLink;
+      if (document.getElementById("tgLink")) document.getElementById("tgLink").href = tgLink;
+      if (document.getElementById("tgBannerLink")) document.getElementById("tgBannerLink").href = tgLink;
+      if (document.getElementById("waGroupBtn")) document.getElementById("waGroupBtn").href = groupLink;
+      if (document.getElementById("waContactBtn")) document.getElementById("waContactBtn").href = waContact;
+
+      const vids = localStorage.getItem("ea_videos");
+
+      const coverImg = document.getElementById("coverImage");
+      const liveFrame = document.getElementById("liveCoverFrame");
+      const liveBadge = document.getElementById("liveLinkNode");
+      const liveText = document.getElementById("liveTextNode");
+
+      if (isLive && liveRaw) {
+        const liveId = extractVidId(liveRaw);
+        coverImg.style.display = "none";
+        liveFrame.style.display = "block";
+        liveFrame.src = `https://www.youtube.com/embed/${liveId}?autoplay=1&mute=0`;
+        
+        liveBadge.classList.add("live-now");
+        liveText.innerText = "🔴 LIVE NOW";
+        liveBadge.href = liveRaw.startsWith("http") ? liveRaw : `https://youtube.com/watch?v=${liveId}`;
+        liveBadge.style.pointerEvents = "auto";
       } else {
-        badge.classList.remove("live");
-        text.innerText = "ACTIVE";
-        link.href = "javascript:void(0)";
-        link.style.pointerEvents = "none";
+        coverImg.style.display = "block";
+        liveFrame.style.display = "none";
+        liveFrame.src = "";
+        
+        liveBadge.classList.remove("live-now");
+        liveText.innerText = "ACTIVE";
+        liveBadge.href = "javascript:void(0)";
+        liveBadge.style.pointerEvents = "none";
       }
 
-      // Gift Code
-      const giftOn = localStorage.getItem("ea_gift_enable") !== "false";
-      const giftCard = document.getElementById("giftCodeSection");
-      if (giftOn) {
-        giftCard.style.display = "block";
-        document.getElementById("uiGiftCode").innerText = localStorage.getItem("ea_gift_code") || "EFOOTBALL2026GOAL";
-        document.getElementById("uiGiftReward").querySelector("span").innerText = localStorage.getItem("ea_gift_reward") || "1000 Coins / Deal";
-        document.getElementById("uiGiftTag").innerText = localStorage.getItem("ea_gift_tag") || "REDEEM CODE";
-        document.getElementById("uiGiftNote").innerText = localStorage.getItem("ea_gift_note") || "সীমিত সময়ের জন্য প্রযোজ্য!";
-      } else {
-        giftCard.style.display = "none";
-      }
-
-      // Player Training
-      const playerOn = localStorage.getItem("ea_player_enable") !== "false";
-      const playerCard = document.getElementById("playerShowcaseSection");
-      if (playerOn) {
-        playerCard.style.display = "block";
-        document.getElementById("uiPlayerName").innerText = localStorage.getItem("ea_player_name") || "Lionel Messi";
-        document.getElementById("uiPlayerPos").innerText = localStorage.getItem("ea_player_pos") || "CF";
-        document.getElementById("uiPlayerCardType").innerText = localStorage.getItem("ea_player_cardtype") || "EPIC";
-        document.getElementById("uiPlayerRating").innerText = localStorage.getItem("ea_player_rating") || "104";
-        document.getElementById("uiPlayerPoints").innerText = localStorage.getItem("ea_player_points") || "Shooting: 4 | Passing: 2 | Dribbling: 8\nDexterity: 8 | Lower Body: 8";
-        document.getElementById("uiPlayerSkills").innerText = localStorage.getItem("ea_player_skills") || "Double Touch, Sole Control, One-touch Pass";
-
-        const playerRaw = localStorage.getItem("ea_player_html") || "";
-        const photoSlot = document.getElementById("uiPlayerMediaBox");
-        if (playerRaw.trim() !== "") {
-          photoSlot.innerHTML = playerRaw;
-        } else {
-          photoSlot.innerHTML = '<i class="fa-solid fa-user-shield" style="font-size: 28px; color: #475569;"></i>';
-        }
-
-        const tgBannerOn = localStorage.getItem("ea_tg_banner_enable") !== "false";
-        document.getElementById("tgInviteBanner").style.display = tgBannerOn ? "flex" : "none";
-      } else {
-        playerCard.style.display = "none";
-      }
-
-      // Videos
-      if (storedVideos) {
-        const parsed = storedVideos.split(",").map(s => s.trim()).filter(Boolean);
-        if (parsed.length > 0) activeVideos = parsed;
-      }
-      buildCarousel();
-
-      // Stats & Notice
-      if (notice) document.getElementById("portalNotice").innerText = notice;
+      if (notice) document.getElementById("noticeText").innerText = notice;
       if (rank) document.getElementById("statRank").innerText = rank;
-      if (subs) document.getElementById("statSubs").innerText = subs;
+      if (fans) document.getElementById("statFans").innerText = fans;
 
-      checkPopupDisplay();
-    }
+      if (code) document.getElementById("giftCodeText").innerText = code;
+      if (desc) document.getElementById("giftDesc").innerText = desc;
+      if (expiry) document.getElementById("giftExpiry").innerText = expiry;
 
-    // Announcement Popup Check
-    function checkPopupDisplay() {
-      const popEnabled = localStorage.getItem("ea_pop_enable") === "true";
-      const dismissed = sessionStorage.getItem("ea_pop_dismissed") === "true";
-
-      if (popEnabled && !dismissed) {
-        document.getElementById("popTitleView").innerText = localStorage.getItem("ea_pop_title") || "ঘোষণা";
-        document.getElementById("popTextView").innerText = localStorage.getItem("ea_pop_text") || "EaNOBAB পোর্টালে স্বাগতম!";
-
-        const html = localStorage.getItem("ea_pop_html") || "";
-        const slot = document.getElementById("popMediaSlot");
-        if (html.trim() !== "") {
-          slot.innerHTML = html;
-          slot.style.display = "block";
-        } else {
-          slot.innerHTML = "";
-          slot.style.display = "none";
-        }
-
-        const btnLabel = localStorage.getItem("ea_pop_btn_label") || "";
-        const btnUrl = localStorage.getItem("ea_pop_btn_url") || "";
-        const cta = document.getElementById("popLinkBtn");
-        if (btnLabel.trim() !== "" && btnUrl.trim() !== "") {
-          cta.href = btnUrl;
-          document.getElementById("popBtnLabel").innerText = btnLabel;
-          cta.style.display = "flex";
-        } else {
-          cta.style.display = "none";
-        }
-
-        setTimeout(() => {
-          document.getElementById("announcementPopup").style.display = "flex";
-        }, 800);
+      if (vids) {
+        const arr = vids.split(",").map(v => v.trim()).filter(Boolean);
+        if (arr.length > 0) videoArray = arr;
       }
+      initSlider();
+      triggerPopupQueue();
     }
 
-    function dismissPopup() {
-      document.getElementById("announcementPopup").style.display = "none";
-      sessionStorage.setItem("ea_pop_dismissed", "true");
-    }
+    let tapCount = 0;
+    let tapTimeout = null;
+    document.getElementById("secretTrigger").addEventListener("click", () => {
+      tapCount++;
+      clearTimeout(tapTimeout);
+      tapTimeout = setTimeout(() => { tapCount = 0; }, 600);
 
-    // Admin Tab Navigation
-    function activateAdminTab(targetTabId) {
-      document.querySelectorAll(".tab-pill").forEach(p => p.classList.remove("active"));
-      document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
-
-      const target = document.getElementById(targetTabId);
-      if (target) target.classList.add("active");
-
-      const pills = document.querySelectorAll(".tab-pill");
-      if (targetTabId === "tabLive") pills[0].classList.add("active");
-      if (targetTabId === "tabGift") pills[1].classList.add("active");
-      if (targetTabId === "tabBuild") pills[2].classList.add("active");
-      if (targetTabId === "tabNotice") pills[3].classList.add("active");
-      if (targetTabId === "tabMedia") pills[4].classList.add("active");
-    }
-
-    // Secret 3-Tap Trigger on Footer Text
-    let tapCounter = 0;
-    let tapClock = null;
-
-    document.getElementById("secretAdminTrigger").addEventListener("click", () => {
-      tapCounter++;
-      clearTimeout(tapClock);
-      tapClock = setTimeout(() => { tapCounter = 0; }, 550);
-
-      if (tapCounter >= 3) {
-        tapCounter = 0;
-        launchAdmin();
+      if (tapCount >= 3) {
+        tapCount = 0;
+        openAdmin();
       }
     });
 
-    function launchAdmin() {
-      const pin = prompt("গোপন এডমিন পাসওয়ার্ড দিন:");
-      if (pin === SECRET_PIN) {
-        document.getElementById("adminModalShell").style.display = "flex";
-        activateAdminTab("tabLive");
+    function renderAdminUpdatesList() {
+      const container = document.getElementById("updatesListContainer");
+      container.innerHTML = "";
 
-        // Populate fields
-        document.getElementById("admLiveSwitch").checked = localStorage.getItem("ea_live") === "true";
-        document.getElementById("admLiveUrl").value = localStorage.getItem("ea_live_url") || "";
-        document.getElementById("admNoticeText").value = document.getElementById("portalNotice").innerText;
-        document.getElementById("admRank").value = document.getElementById("statRank").innerText;
-        document.getElementById("admSubs").value = document.getElementById("statSubs").innerText;
+      updatesQueue.forEach((u, index) => {
+        const item = document.createElement("div");
+        item.className = "admin-dynamic-item";
+        item.innerHTML = `
+          <div class="admin-item-header">
+            <strong>আপডেট #${index + 1}</strong>
+            <button type="button" class="btn-del-item" onclick="deleteUpdateSlot(${index})"><i class="fa-solid fa-trash"></i> মুছুন</button>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <div class="field-box" style="flex: 1;">
+              <label>ট্যাগ (যেমন: NEW PACK):</label>
+              <input type="text" class="field-input u-tag" value="${u.tag || ''}" placeholder="NEW PACK">
+            </div>
+            <div class="field-box" style="flex: 1;">
+              <label>তারিখ/টাইম (যেমন: আজ):</label>
+              <input type="text" class="field-input u-date" value="${u.date || ''}" placeholder="আজকের আপডেট">
+            </div>
+          </div>
+          <div class="field-box">
+            <label>আপডেট শিরোনাম:</label>
+            <input type="text" class="field-input u-title" value="${u.title || ''}" placeholder="আপডেট শিরোনাম লিখুন...">
+          </div>
+          <div class="field-box">
+            <label>ছবি লিংক বা HTML কোড:</label>
+            <textarea class="field-input u-media" rows="2" placeholder="https://... অথবা <img>">${u.media || ''}</textarea>
+          </div>
+          <div class="field-box">
+            <label>আপডেট বিবরণ:</label>
+            <textarea class="field-input u-desc" rows="3" placeholder="বিস্তারিত বিবরণ লিখুন...">${u.desc || ''}</textarea>
+          </div>
+          <div class="field-box">
+            <label>বাটন টেক্সট ও লিংক (ঐচ্ছিক):</label>
+            <div style="display: flex; gap: 6px;">
+              <input type="text" class="field-input u-btn-text" style="flex: 1;" value="${u.btnText || ''}" placeholder="বাটন নাম">
+              <input type="text" class="field-input u-btn-link" style="flex: 2;" value="${u.btnLink || ''}" placeholder="https://...">
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
 
-        document.getElementById("admGiftEnable").checked = localStorage.getItem("ea_gift_enable") !== "false";
-        document.getElementById("admGiftCode").value = localStorage.getItem("ea_gift_code") || "EFOOTBALL2026GOAL";
-        document.getElementById("admGiftReward").value = localStorage.getItem("ea_gift_reward") || "1000 Coins / Deal";
-        document.getElementById("admGiftTag").value = localStorage.getItem("ea_gift_tag") || "REDEEM CODE";
-        document.getElementById("admGiftNote").value = localStorage.getItem("ea_gift_note") || "সীমিত সময়ের জন্য প্রযোজ্য!";
+    function addNewUpdateSlot() {
+      updatesQueue.push({
+        tag: "NEW UPDATE",
+        date: "আজ",
+        title: "নতুন আপডেট শিরোনাম",
+        media: "",
+        desc: "এখানে আপডেটের বিস্তারিত বিবরণ লিখুন।",
+        btnText: "বিস্তারিত দেখুন",
+        btnLink: ""
+      });
+      renderAdminUpdatesList();
+    }
 
-        document.getElementById("admBuildEnable").checked = localStorage.getItem("ea_player_enable") !== "false";
-        document.getElementById("admPlayerName").value = localStorage.getItem("ea_player_name") || "Lionel Messi";
-        document.getElementById("admPlayerPos").value = localStorage.getItem("ea_player_pos") || "CF";
-        document.getElementById("admPlayerCardType").value = localStorage.getItem("ea_player_cardtype") || "EPIC";
-        document.getElementById("admPlayerRating").value = localStorage.getItem("ea_player_rating") || "104";
-        document.getElementById("admPlayerPoints").value = localStorage.getItem("ea_player_points") || "Shooting: 4 | Passing: 2 | Dribbling: 8\nDexterity: 8 | Lower Body: 8";
-        document.getElementById("admPlayerSkills").value = localStorage.getItem("ea_player_skills") || "Double Touch, Sole Control, One-touch Pass";
-        document.getElementById("admPlayerHtml").value = localStorage.getItem("ea_player_html") || "";
-        document.getElementById("admTgBannerEnable").checked = localStorage.getItem("ea_tg_banner_enable") !== "false";
-
-        document.getElementById("admPopEnable").checked = localStorage.getItem("ea_pop_enable") === "true";
-        document.getElementById("admPopTitle").value = localStorage.getItem("ea_pop_title") || "";
-        document.getElementById("admPopText").value = localStorage.getItem("ea_pop_text") || "";
-        document.getElementById("admPopHtml").value = localStorage.getItem("ea_pop_html") || "";
-        document.getElementById("admPopBtnLabel").value = localStorage.getItem("ea_pop_btn_label") || "";
-        document.getElementById("admPopBtnUrl").value = localStorage.getItem("ea_pop_btn_url") || "";
-
-        document.getElementById("admVideoLinks").value = activeVideos.join(", ");
-      } else if (pin !== null) {
-        triggerToast("ভুল পাসওয়ার্ড!");
+    function deleteUpdateSlot(idx) {
+      if (confirm("এই আপডেটটি মুছে ফেলতে চান?")) {
+        updatesQueue.splice(idx, 1);
+        renderAdminUpdatesList();
       }
     }
 
-    function dismissAdmin() {
-      document.getElementById("adminModalShell").style.display = "none";
+    function renderAdminPopupsList() {
+      const container = document.getElementById("popupsListContainer");
+      container.innerHTML = "";
+
+      popupsQueue.forEach((p, index) => {
+        const item = document.createElement("div");
+        item.className = "admin-dynamic-item";
+        item.innerHTML = `
+          <div class="popup-item-header">
+            <strong>পপ-আপ #${index + 1}</strong>
+            <button type="button" class="btn-del-popup" onclick="deletePopupSlot(${index})"><i class="fa-solid fa-trash"></i> মুছুন</button>
+          </div>
+          <div class="field-box">
+            <label>শিরোনাম:</label>
+            <input type="text" class="field-input p-title" value="${p.title || ''}" placeholder="শিরোনাম লিখুন...">
+          </div>
+          <div class="field-box">
+            <label>ছবি লিংক বা HTML কোড:</label>
+            <textarea class="field-input p-media" rows="2" placeholder="https://... অথবা <img>">${p.media || ''}</textarea>
+          </div>
+          <div class="field-box">
+            <label>বিস্তারিত বিবরণ:</label>
+            <textarea class="field-input p-text" rows="2" placeholder="বর্ণনা লিখুন...">${p.text || ''}</textarea>
+          </div>
+          <div class="field-box">
+            <label>বাটন টেক্সট ও লিংক:</label>
+            <div style="display: flex; gap: 6px;">
+              <input type="text" class="field-input p-btn-text" style="flex: 1;" value="${p.btnText || ''}" placeholder="বাটন নাম">
+              <input type="text" class="field-input p-btn-link" style="flex: 2;" value="${p.btnLink || ''}" placeholder="https://...">
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
     }
 
-    function commitAdminSettings() {
-      localStorage.setItem("ea_live", document.getElementById("admLiveSwitch").checked);
-      localStorage.setItem("ea_live_url", document.getElementById("admLiveUrl").value.trim());
-      localStorage.setItem("ea_msg", document.getElementById("admNoticeText").value.trim());
-      localStorage.setItem("ea_rank", document.getElementById("admRank").value.trim());
-      localStorage.setItem("ea_subs", document.getElementById("admSubs").value.trim());
-
-      localStorage.setItem("ea_gift_enable", document.getElementById("admGiftEnable").checked);
-      localStorage.setItem("ea_gift_code", document.getElementById("admGiftCode").value.trim());
-      localStorage.setItem("ea_gift_reward", document.getElementById("admGiftReward").value.trim());
-      localStorage.setItem("ea_gift_tag", document.getElementById("admGiftTag").value.trim());
-      localStorage.setItem("ea_gift_note", document.getElementById("admGiftNote").value.trim());
-
-      localStorage.setItem("ea_player_enable", document.getElementById("admBuildEnable").checked);
-      localStorage.setItem("ea_player_name", document.getElementById("admPlayerName").value.trim());
-      localStorage.setItem("ea_player_pos", document.getElementById("admPlayerPos").value.trim());
-      localStorage.setItem("ea_player_cardtype", document.getElementById("admPlayerCardType").value.trim());
-      localStorage.setItem("ea_player_rating", document.getElementById("admPlayerRating").value.trim());
-      localStorage.setItem("ea_player_points", document.getElementById("admPlayerPoints").value.trim());
-      localStorage.setItem("ea_player_skills", document.getElementById("admPlayerSkills").value.trim());
-      localStorage.setItem("ea_player_html", document.getElementById("admPlayerHtml").value.trim());
-      localStorage.setItem("ea_tg_banner_enable", document.getElementById("admTgBannerEnable").checked);
-
-      localStorage.setItem("ea_pop_enable", document.getElementById("admPopEnable").checked);
-      localStorage.setItem("ea_pop_title", document.getElementById("admPopTitle").value.trim());
-      localStorage.setItem("ea_pop_text", document.getElementById("admPopText").value.trim());
-      localStorage.setItem("ea_pop_html", document.getElementById("admPopHtml").value.trim());
-      localStorage.setItem("ea_pop_btn_label", document.getElementById("admPopBtnLabel").value.trim());
-      localStorage.setItem("ea_pop_btn_url", document.getElementById("admPopBtnUrl").value.trim());
-
-      const rawV = document.getElementById("admVideoLinks").value.trim();
-      if (rawV) localStorage.setItem("ea_videos", rawV);
-
-      sessionStorage.removeItem("ea_pop_dismissed");
-
-      initPortalData();
-      dismissAdmin();
-      triggerToast("সব সেটিংস সফলভাবে আপডেট হয়েছে!");
+    function addNewPopupSlot() {
+      popupsQueue.push({
+        title: "নতুন ঘোষণা",
+        media: "",
+        text: "এখানে আপনার নোটিশ লিখুন।",
+        btnText: "ক্লিক করুন",
+        btnLink: ""
+      });
+      renderAdminPopupsList();
     }
 
-    window.onload = initPortalData;
+    function deletePopupSlot(idx) {
+      if (confirm("এই পপ-আপটি মুছে ফেলতে চান?")) {
+        popupsQueue.splice(idx, 1);
+        renderAdminPopupsList();
+      }
+    }
+
+    function openAdmin() {
+      const pin = prompt("সিক্রেট এডমিন পিন দিন:");
+      if (pin === ADMIN_PIN) {
+        document.getElementById("adminModal").style.display = "flex";
+        document.getElementById("inputLiveToggle").checked = localStorage.getItem("ea_live") === "true";
+        document.getElementById("inputLiveUrl").value = localStorage.getItem("ea_live_url") || "";
+        document.getElementById("inputNotice").value = document.getElementById("noticeText").innerText;
+        document.getElementById("inputRank").value = document.getElementById("statRank").innerText;
+        document.getElementById("inputFans").value = document.getElementById("statFans").innerText;
+
+        renderAdminUpdatesList();
+
+        document.getElementById("inputPopupsEnabled").checked = localStorage.getItem("ea_popups_enabled") !== "false";
+        renderAdminPopupsList();
+
+        document.getElementById("inputGiftCode").value = document.getElementById("giftCodeText").innerText;
+        document.getElementById("inputGiftDesc").value = document.getElementById("giftDesc").innerText;
+        document.getElementById("inputGiftExpiry").value = document.getElementById("giftExpiry").innerText;
+
+        document.getElementById("inputYtUrl").value = localStorage.getItem("ea_yt_url") || "https://youtube.com/@eanobab?si=hCmZ6ptMcAK8PedL";
+        document.getElementById("inputFbUrl").value = localStorage.getItem("ea_fb_url") || "https://www.facebook.com/Eanobaba";
+        document.getElementById("inputIgUrl").value = localStorage.getItem("ea_ig_url") || "https://www.instagram.com/eanobaba?stkn=NGR1cmJ0bWlhYXBx";
+        document.getElementById("inputTkUrl").value = localStorage.getItem("ea_tk_url") || "https://vm.tiktok.com/ZS9DXjMvGE1UC-Imczq/";
+        document.getElementById("inputTgUrl").value = localStorage.getItem("ea_tg_url") || "https://t.me/EaNOBAB";
+        document.getElementById("inputGroupUrl").value = localStorage.getItem("ea_group_url") || "https://postimg.cc/VdMmfsqz";
+        document.getElementById("inputWaContactUrl").value = localStorage.getItem("ea_wa_contact") || "https://wa.me/8801820729663?text=Hello%20EaNOBAB,%20Business%20Query";
+
+        document.getElementById("inputVideos").value = videoArray.join(", ");
+      } else if (pin !== null) {
+        alert("ভুল পিন নম্বর!");
+      }
+    }
+
+    function closeAdmin() {
+      document.getElementById("adminModal").style.display = "none";
+    }
+
+    function switchAdminTab(tabId, el) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+      el.classList.add("active");
+      document.getElementById(tabId).classList.add("active");
+    }
+
+    function saveAllSettings() {
+      localStorage.setItem("ea_live", document.getElementById("inputLiveToggle").checked);
+      localStorage.setItem("ea_live_url", document.getElementById("inputLiveUrl").value.trim());
+      localStorage.setItem("ea_notice", document.getElementById("inputNotice").value.trim());
+      localStorage.setItem("ea_rank", document.getElementById("inputRank").value.trim());
+      localStorage.setItem("ea_fans", document.getElementById("inputFans").value.trim());
+
+      const updateItems = document.querySelectorAll("#updatesListContainer .admin-dynamic-item");
+      const updatedUpdates = [];
+      updateItems.forEach(el => {
+        updatedUpdates.push({
+          tag: el.querySelector(".u-tag").value.trim(),
+          date: el.querySelector(".u-date").value.trim(),
+          title: el.querySelector(".u-title").value.trim(),
+          media: el.querySelector(".u-media").value.trim(),
+          desc: el.querySelector(".u-desc").value.trim(),
+          btnText: el.querySelector(".u-btn-text").value.trim(),
+          btnLink: el.querySelector(".u-btn-link").value.trim()
+        });
+      });
+      updatesQueue = updatedUpdates;
+      localStorage.setItem("ea_updates_queue", JSON.stringify(updatesQueue));
+
+      localStorage.setItem("ea_popups_enabled", document.getElementById("inputPopupsEnabled").checked);
+      const popupItems = document.querySelectorAll("#popupsListContainer .admin-dynamic-item");
+      const updatedPopups = [];
+      popupItems.forEach(el => {
+        updatedPopups.push({
+          title: el.querySelector(".p-title").value.trim(),
+          media: el.querySelector(".p-media").value.trim(),
+          text: el.querySelector(".p-text").value.trim(),
+          btnText: el.querySelector(".p-btn-text").value.trim(),
+          btnLink: el.querySelector(".p-btn-link").value.trim()
+        });
+      });
+      popupsQueue = updatedPopups;
+      localStorage.setItem("ea_popups_queue", JSON.stringify(popupsQueue));
+
+      localStorage.setItem("ea_gift_code", document.getElementById("inputGiftCode").value.trim());
+      localStorage.setItem("ea_gift_desc", document.getElementById("inputGiftDesc").value.trim());
+      localStorage.setItem("ea_gift_expiry", document.getElementById("inputGiftExpiry").value.trim());
+
+      localStorage.setItem("ea_yt_url", document.getElementById("inputYtUrl").value.trim());
+      localStorage.setItem("ea_fb_url", document.getElementById("inputFbUrl").value.trim());
+      localStorage.setItem("ea_ig_url", document.getElementById("inputIgUrl").value.trim());
+      localStorage.setItem("ea_tk_url", document.getElementById("inputTkUrl").value.trim());
+      localStorage.setItem("ea_tg_url", document.getElementById("inputTgUrl").value.trim());
+      localStorage.setItem("ea_group_url", document.getElementById("inputGroupUrl").value.trim());
+      localStorage.setItem("ea_wa_contact", document.getElementById("inputWaContactUrl").value.trim());
+
+      const rawVids = document.getElementById("inputVideos").value.trim();
+      if (rawVids) localStorage.setItem("ea_videos", rawVids);
+
+      loadPortalData();
+      closeAdmin();
+      alert("সমস্ত আপডেট ও সেটিংস সফলভাবে আপডেট ও সংরক্ষিত হয়েছে!");
+    }
+
+    window.onload = loadPortalData;
   </script>
 </body>
 </html>
-```
-
----
-
-### যা যা আরও সুশৃঙ্খল ও মার্জিত করা হয়েছে:
-1. **ভিজ্যুয়াল হায়ারার্কি ও ক্ল্যাটার-ফ্রি স্পেসিং:**
-   * প্রতিটি সেকশনকে আধুনিক কার্ড বর্ডারে (১৮-২৬px বর্ডার রেডিয়াস) সুশৃঙ্খলভাবে সাজানো হয়েছে, ফলে অতিরিক্ত আঁটসাঁট বা এলোমেলো মনে হবে না।
-   * নিয়ন অ্যাকসেন্ট কালার (Cyan `#00f2fe`, Violet `#7928ca`, Pink `#ec4899`, Gold `#facc15`) ব্যবহার করে আন্তর্জাতিক মানের প্রিমিয়াম এস্পোর্টস লুক দেওয়া হয়েছে।
-
-2. **কনটেন্ট ফ্লো ও ব্র্যান্ডিং:**
-   * **টপ প্রোফাইল:** কভার ব্যানার, এনিমেটেড রোটেটিং আউটার গ্লোযুক্ত লোগো এবং সরাসরি লিংকযুক্ত লাইভ স্ট্যাটাস ব্যাজ (`🔴 LIVE NOW` / `ACTIVE`)।
-   * **স্ট্যাটস বার:** ৩টি পরিষ্কার বক্সে Rank, Followers ও Events সংখ্যা।
-   * **সক্রিয় গিফট কোড কার্ড:** স্পষ্ট রিডিম কোড, ওয়ান-ট্যাপ কপি বাটন এবং সরাসরি Konami পোর্টালে যাওয়ার বোতাম।
-   * **মেটা ট্রেইনিং ও টেলিগ্রাম ইনভাইট ব্যানার:** প্লেয়ার কার্ডের নিচেই পরিষ্কারভাবে লেখা ব্যানার দেওয়া হয়েছে যাতে সবাই বুঝতে পারে যে প্রতিদিনের সব কার্ডের ট্রেইনিং পাওয়ার জন্য টেলিগ্রামে জয়েন হওয়া প্রয়োজন।
-   * **ইউটিউব ৩-সেকেন্ড ভিডিও ক্যারোসেল:** অ্যারো বাটন, ডট ইন্ডিকেটর এবং মাউস রাখলে অটো-পজ সুবিধা।
-   * **সোশ্যাল ম্যাট্রিক্স ও হোয়াটসঅ্যাপ অ্যাকশন বাটন:** 1v1 ফ্রেন্ডলি ম্যাচ রিকোয়েস্ট ও সাধারণ যোগাযোগের জন্য আলাদা বাটন।
-
-3. **গোপন অ্যাডমিন প্যানেল:**
-   * পেজের নিচে **`© 2026 EaNOBAB | eFootball Creator`** লেখার ওপর দ্রুত **৩ বার ট্যাপ** করে পিন `nobab123` দিলেই ৫টি ট্যাবে বিন্যস্ত ড্যাশবোর্ড খুলবে।
