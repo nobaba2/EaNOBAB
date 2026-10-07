@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EaNOBAB - eFootball Esports Portal</title>
+  
+  <!-- Modern Clean Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Teko:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-main: #060814;
+      --card-bg: rgba(14, 18, 36, 0.72);
+      --card-border: rgba(0, 242, 254, 0.16);
+      --card-border-hover: rgba(0, 242, 254, 0.45);
+      --accent-cyan: #00f2fe;
+      --accent-blue: #4facfe;
+      --accent-purple: #7928ca;
+      --accent-yellow: #facc15;
+      --accent-pink: #ec4899;
+      --accent-green: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Hind Siliguri', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px 12px 64px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Lighting Mesh */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 12% 18%, rgba(121, 40, 202, 0.22) 0%, transparent 40%),
+        radial-gradient(circle at 88% 30%, rgba(0, 242, 254, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 50%);
+      z-index: -2;
+    }
+
+    .grid-lines {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Unified Container */
+    .portal-shell {
+      width: 100%;
+      max-width: 510px;
+      background: var(--card-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--card-border);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 242, 254, 0.08);
+      position: relative;
+    }
+
+    /* Cover Header */
+    .hero-banner {
+      width: 100%;
+      height: 175px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.85);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .portal-shell:hover .hero-banner img {
+      transform: scale(1.03);
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6, 8, 20, 0.1) 0%, var(--bg-main) 100%);
+    }
+
+    /* Avatar & Titles */
+    .profile-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: -65px;
+      position: relative;
+      z-index: 2;
+      padding: 0 16px;
+    }
+
+    .avatar-ring {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      padding: 3.5px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
+      background-size: 200% 200%;
+      animation: rotateGlow 5s linear infinite;
+      box-shadow: 0 8px 24px rgba(0, 242, 254, 0.4);
+    }
+
+    @keyframes rotateGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .avatar-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #000;
+      border: 3px solid #060814;
+    }
+
+    /* Live Stream Floating Badge */
+    .live-stream-pill {
+      text-decoration: none;
+      position: absolute;
+      bottom: -4px;
+      z-index: 10;
+    }
+
+    .status-badge {
+      background: #059669;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3.5px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.6px;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+      transition: all 0.25s ease;
+    }
+
+    .status-badge.live {
+      background: linear-gradient(135deg, #ef4444, #f43f5e);
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.85);
+      animation: livePulse 1.6s infinite ease-in-out;
+    }
+
+    .dot-ping {
+      width: 7px;
+      height: 7px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    @keyframes livePulse {
+      0%, 100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.06); filter: brightness(1.2); }
+    }
+
+    .brand-name {
+      font-family: 'Teko', sans-serif;
+      font-size: 38px;
+      letter-spacing: 2px;
+      margin-top: 10px;
+      line-height: 1;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .creator-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 242, 254, 0.08);
+      border: 1px solid rgba(0, 242, 254, 0.28);
+      color: var(--accent-cyan);
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    /* Structured Sections Layout */
+    .portal-body {
+      padding: 18px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Clean Stats Row */
+    .stats-card {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 18px;
+      padding: 10px 4px;
+      text-align: center;
+    }
+
+    .stat-box:not(:last-child) {
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .stat-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--accent-yellow);
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* Welcome Notice Box */
+    .notice-bar {
+      background: rgba(0, 242, 254, 0.04);
+      border-left: 3.5px solid var(--accent-cyan);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: #e2e8f0;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    /* Section Header Common */
+    .section-head {
+      font-size: 14px;
+      font-weight: 700;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 9px;
+      letter-spacing: 0.3px;
+    }
+
+    .section-head i {
+      color: var(--accent-cyan);
+    }
+
+    /* Clean Gift Code Card */
+    .gift-container {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(0, 242, 254, 0.05));
+      border: 1px dashed rgba(0, 242, 254, 0.35);
+      border-radius: 18px;
+      padding: 14px;
+      position: relative;
+    }
+
+    .gift-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 9px;
+    }
+
+    .gift-badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 9px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent-pink), #f43f5e);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .gift-reward {
+      font-size: 12px;
+      color: var(--accent-yellow);
+      font-weight: 600;
+    }
+
+    .gift-box-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 12px;
+      padding: 7px 12px;
+      margin-bottom: 9px;
+      gap: 8px;
+    }
+
+    .gift-code-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--accent-cyan);
+    }
+
+    .copy-button {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #060814;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+
+    .copy-button:hover {
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
+    }
+
+    .gift-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .gift-link-btn {
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .gift-link-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--accent-cyan);
+    }
+
+    /* Clean Meta Player Showcase */
+    .player-card {
+      background: rgba(18, 22, 45, 0.85);
+      border: 1px solid rgba(250, 204, 21, 0.25);
+      border-radius: 18px;
+      padding: 14px;
+      position: relative;
+    }
+
+    .player-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 11px;
+    }
+
+    .player-tags {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag-epic {
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .tag-pos {
+      background: rgba(0, 242, 254, 0.12);
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      color: var(--accent-cyan);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .rating-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--accent-yellow);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .player-profile-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .player-photo-slot {
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(250, 204, 21, 0.35);
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .player-photo-slot img,
+    .player-photo-slot a img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+
+    .player-meta h4 {
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .player-meta p {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .stats-breakdown-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 9px;
+    }
+
+    .breakdown-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .breakdown-text {
+      font-size: 13px;
+      color: #e2e8f0;
+      line-height: 1.5;
+      font-family: monospace;
+      white-space: pre-line;
+    }
+
+    .skills-row {
+      background: rgba(236, 72, 153, 0.08);
+      border-left: 3px solid var(--accent-pink);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    /* Telegram CTA Banner inside Player Section */
+    .tg-cta-banner {
+      background: linear-gradient(135deg, rgba(34, 158, 217, 0.12), rgba(121, 40, 202, 0.16));
+      border: 1px solid rgba(34, 158, 217, 0.35);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tg-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12.5px;
+      color: #e2e8f0;
+      line-height: 1.45;
+    }
+
+    .tg-info i {
+      color: #229ed9;
+      font-size: 16px;
+      margin-top: 2px;
+    }
+
+    .tg-button {
+      text-decoration: none;
+      background: linear-gradient(90deg, #229ed9, #0088cc);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8.5px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .tg-button:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+
+    /* Video Carousel (3s Auto-Scroll) */
+    .carousel-module {
+      position: relative;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      background: #000;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+    }
+
+    .carousel-slide iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(6, 8, 20, 0.8);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .nav-arrow:hover {
+      background: var(--accent-cyan);
+      color: #000;
+    }
+
+    .nav-arrow.left { left: 8px; }
+    .nav-arrow.right { right: 8px; }
+
+    .dots-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .dot-item {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot-item.active {
+      width: 20px;
+      border-radius: 8px;
+      background: var(--accent-cyan);
+    }
+
+    /* Social Connect Grid */
+    .social-matrix {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .social-tile {
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 14px;
+      padding: 13px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      transition: all 0.25s ease;
+    }
+
+    .social-tile:hover {
+      transform: translateY(-3px);
+      border-color: var(--card-border-hover);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .social-icon-bubble {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .social-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .yt .social-icon-bubble { background: #ff0000; box-shadow: 0 0 14px rgba(255, 0, 0, 0.4); }
+    .fb .social-icon-bubble { background: #1877f2; box-shadow: 0 0 14px rgba(24, 119, 242, 0.4); }
+    .ig .social-icon-bubble { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); box-shadow: 0 0 14px rgba(220, 39, 67, 0.4); }
+    .tt .social-icon-bubble { background: #000; border: 1px solid rgba(255, 255, 255, 0.2); color: #00f2fe; }
+
+    .tg-wide {
+      grid-column: span 2;
+      flex-direction: row;
+      justify-content: center;
+      gap: 12px;
+      padding: 12px 16px;
+    }
+    .tg-wide .social-icon-bubble { background: #229ed9; box-shadow: 0 0 14px rgba(34, 158, 217, 0.4); }
+
+    /* Action Buttons (1v1 & WhatsApp) */
+    .cta-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .challenge-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14.5px;
+      box-shadow: 0 6px 18px rgba(236, 72, 153, 0.28);
+      transition: all 0.25s ease;
+    }
+
+    .challenge-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(236, 72, 153, 0.45);
+    }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14.5px;
+      font-weight: 700;
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
+      transition: all 0.25s ease;
+    }
+
+    .wa-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Discreet Footer */
+    .footer-wrapper {
+      text-align: center;
+      padding: 6px 0 2px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.35);
+      user-select: none;
+    }
+
+    .secret-trigger-text {
+      cursor: pointer;
+      display: inline-block;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    .secret-trigger-text:hover {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Clean Announcement Popup */
+    .popup-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .popup-box {
+      background: #0d1124;
+      border: 1px solid var(--accent-cyan);
+      border-radius: 22px;
+      width: 100%;
+      max-width: 430px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 242, 254, 0.25);
+    }
+
+    .popup-head {
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .popup-head span {
+      color: var(--accent-yellow);
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .popup-x {
+      background: transparent;
+      border: 0;
+      color: #94a3b8;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .popup-x:hover {
+      color: #fff;
+    }
+
+    .popup-content {
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .popup-media-wrap {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .popup-media-wrap img,
+    .popup-media-wrap a img {
+      width: 100% !important;
+      height: auto !important;
+      display: block !important;
+    }
+
+    .popup-desc {
+      color: #e2e8f0;
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .popup-cta-btn {
+      text-decoration: none;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+      color: #060814;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 11px;
+      border-radius: 10px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Modern Tabbed Admin Modal */
+    .admin-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 1010;
+      justify-content: center;
+      align-items: center;
+      padding: 14px;
+    }
+
+    .admin-frame {
+      background: #0b0f20;
+      border: 1px solid var(--accent-cyan);
+      width: 100%;
+      max-width: 480px;
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      max-height: 90vh;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0, 242, 254, 0.3);
+    }
+
+    .admin-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .admin-header h3 {
+      font-size: 16px;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .admin-tabs-nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .tab-pill {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 2px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.2s;
+    }
+
+    .tab-pill i {
+      font-size: 13px;
+    }
+
+    .tab-pill.active {
+      color: #060814;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      font-weight: 700;
+    }
+
+    .admin-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .tab-section {
+      display: none;
+    }
+
+    .tab-section.active {
+      display: block;
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    .field-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .field-control {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9px;
+      padding: 9px 11px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .field-control:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    .code-style {
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--accent-cyan);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.035);
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .admin-foot {
+      padding: 12px 18px;
+      background: rgba(0, 0, 0, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-save {
+      flex: 1;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+      border: 0;
+      color: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn-close {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* Toast Notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      background: linear-gradient(90deg, #10b981, #059669);
+      color: #ffffff;
+      padding: 9px 18px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 9999;
+    }
+
+    .toast-pill.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Lighting -->
+  <div class="ambient-bg"></div>
+  <div class="grid-lines"></div>
+
+  <!-- Main Unified Shell -->
+  <main class="portal-shell">
+    
+    <!-- Hero Cover -->
+    <header class="hero-banner">
+      <img src="https://i.ibb.co.com/XZKpx67r/file-000000005bec820b994af6170dabf997.png" alt="EaNOBAB Cover" />
+      <div class="hero-gradient"></div>
+    </header>
+
+    <!-- Profile Area -->
+    <section class="profile-block">
+      <div class="avatar-ring">
+        <img src="https://i.ibb.co.com/Y7VVkzw8/file-00000000b89081faa13372e4325f97fb.png" alt="EaNOBAB Logo" />
+        
+        <!-- Live Status Floating Link -->
+        <a id="streamBadgeLink" class="live-stream-pill" href="#" target="_blank" rel="noopener noreferrer">
+          <div class="status-badge" id="streamBadge">
+            <span class="dot-ping"></span> <span id="streamStatusText">ACTIVE</span>
+          </div>
+        </a>
+      </div>
+
+      <h1 class="brand-name">EaNOBAB</h1>
+      <div class="creator-tag">
+        <i class="fa-solid fa-gamepad"></i> eFootball Content Creator
+      </div>
+    </section>
+
+    <!-- Portal Body Contents -->
+    <div class="portal-body">
+      
+      <!-- Quick Stats Card -->
+      <section class="stats-card">
+        <div class="stat-box">
+          <div class="stat-val" id="statRank">DIV 1</div>
+          <div class="stat-lbl">Rank</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="statSubs">50K+</div>
+          <div class="stat-lbl">Followers</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="statEvents">100+</div>
+          <div class="stat-lbl">Events</div>
+        </div>
+      </section>
+
+      <!-- Welcome Notice -->
+      <div class="notice-bar" id="portalNotice">
+        ⚽ স্বাগতম EaNOBAB-এর অফিসিয়াল গেমিং পোর্টালে! প্রতিদিনের eFootball স্কোয়াড ট্রেইনিং, রিডিম কোড ও গেমপ্লে টিপস পেতে যুক্ত থাকুন।
+      </div>
+
+      <!-- 🎁 Gift / Redeem Code Section -->
+      <section class="gift-container" id="giftCodeSection">
+        <div class="gift-top">
+          <span class="gift-badge">
+            <i class="fa-solid fa-gift"></i> <span id="uiGiftTag">REDEEM CODE</span>
+          </span>
+          <span class="gift-reward" id="uiGiftReward">
+            <i class="fa-solid fa-coins"></i> <span>1000 Coins / Deal</span>
+          </span>
+        </div>
+
+        <div class="gift-box-row">
+          <span class="gift-code-text" id="uiGiftCode">EFOOTBALL2026GOAL</span>
+          <button class="copy-button" onclick="copyGiftCode()">
+            <i class="fa-regular fa-copy"></i> কপি করুন
+          </button>
+        </div>
+
+        <div class="gift-foot">
+          <span id="uiGiftNote"><i class="fa-regular fa-clock"></i> দ্রুত রিডিম করুন</span>
+          <a href="https://my.konami.net/" target="_blank" rel="noopener noreferrer" class="gift-link-btn">
+            Konami পোর্টাল <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+      </section>
+
+      <!-- ⚽ Meta Player Training Showcase -->
+      <section class="player-card" id="playerShowcaseSection">
+        <div class="player-header">
+          <div class="player-tags">
+            <span class="tag-epic" id="uiPlayerCardType">EPIC</span>
+            <span class="tag-pos" id="uiPlayerPos">CF</span>
+          </div>
+          <div class="rating-val">
+            <i class="fa-solid fa-bolt" style="font-size: 14px;"></i>
+            <span id="uiPlayerRating">104</span>
+          </div>
+        </div>
+
+        <div class="player-profile-row">
+          <div class="player-photo-slot" id="uiPlayerMediaBox">
+            <i class="fa-solid fa-user-shield" style="font-size: 28px; color: #475569;"></i>
+          </div>
+          <div class="player-meta">
+            <h4 id="uiPlayerName">Lionel Messi</h4>
+            <p id="uiPlayerSubtitle">🔥 Recommended Best Meta Build</p>
+          </div>
+        </div>
+
+        <!-- Progression Points Breakdown -->
+        <div class="stats-breakdown-card">
+          <div class="breakdown-title">
+            <i class="fa-solid fa-sliders"></i> Progression Points Breakdown:
+          </div>
+          <div class="breakdown-text" id="uiPlayerPoints">Shooting: 4 | Passing: 2 | Dribbling: 8
+Dexterity: 8 | Lower Body: 8</div>
+        </div>
+
+        <!-- Recommended Skills -->
+        <div class="skills-row" id="uiSkillsRow">
+          <i class="fa-solid fa-star text-warning"></i>
+          <span><strong>Skills:</strong> <span id="uiPlayerSkills">Double Touch, Sole Control, One-touch Pass</span></span>
+        </div>
+
+        <!-- Telegram Call-to-action Banner -->
+        <div class="tg-cta-banner" id="tgInviteBanner">
+          <div class="tg-info">
+            <i class="fa-brands fa-telegram"></i>
+            <div>
+              <strong>সব কার্ডের সেরা ট্রেইনিং পেতে চান?</strong>
+              <div style="font-size: 11.5px; color: #cbd5e1; margin-top: 2px;">
+                প্রতিদিনের সব Epic ও মেটা প্লেয়ার ট্রেইনিং বিল্ড সবার আগে পেতে আমাদের টেলিগ্রাম চ্যানেলে জয়েন থাকুন!
+              </div>
+            </div>
+          </div>
+          <a href="https://t.me/EaNOBAB" target="_blank" rel="noopener noreferrer" class="tg-button">
+            <i class="fa-solid fa-paper-plane"></i> টেলিগ্রামে জয়েন হয়ে সব ট্রেইনিং দেখুন
+          </a>
+        </div>
+      </section>
+
+      <!-- 🎬 YouTube Carousel (3s Auto-Scroll) -->
+      <section class="video-section">
+        <div class="section-head">
+          <span><i class="fa-solid fa-fire text-danger" style="color: #ff334b;"></i> জনপ্রিয় ও সাম্প্রতিক ভিডিও</span>
+        </div>
+        
+        <div class="carousel-module" id="carouselWrapper">
+          <button class="nav-arrow left" onclick="cycleSlide(-1)" title="Previous">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button class="nav-arrow right" onclick="cycleSlide(1)" title="Next">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+          
+          <div class="carousel-track" id="carouselTrack"></div>
+        </div>
+
+        <div class="dots-row" id="carouselDots"></div>
+      </section>
+
+      <!-- 🌐 Social Matrix -->
+      <section class="social-matrix">
+        <a href="https://youtube.com/@eanobab?si=hCmZ6ptMcAK8PedL" target="_blank" rel="noopener noreferrer" class="social-tile yt">
+          <div class="social-icon-bubble"><i class="fa-brands fa-youtube"></i></div>
+          <span class="social-title">YouTube</span>
+        </a>
+
+        <a href="https://www.facebook.com/Eanobaba" target="_blank" rel="noopener noreferrer" class="social-tile fb">
+          <div class="social-icon-bubble"><i class="fa-brands fa-facebook-f"></i></div>
+          <span class="social-title">Facebook</span>
+        </a>
+
+        <a href="https://www.instagram.com/eanobaba?stkn=NGR1cmJ0bWlhYXBx" target="_blank" rel="noopener noreferrer" class="social-tile ig">
+          <div class="social-icon-bubble"><i class="fa-brands fa-instagram"></i></div>
+          <span class="social-title">Instagram</span>
+        </a>
+
+        <a href="https://vm.tiktok.com/ZS9DXjMvGE1UC-Imczq/" target="_blank" rel="noopener noreferrer" class="social-tile tt">
+          <div class="social-icon-bubble"><i class="fa-brands fa-tiktok"></i></div>
+          <span class="social-title">TikTok</span>
+        </a>
+
+        <a href="https://t.me/EaNOBAB" target="_blank" rel="noopener noreferrer" class="social-tile tg-wide">
+          <div class="social-icon-bubble"><i class="fa-brands fa-telegram"></i></div>
+          <span class="social-title">টেলিগ্রাম টুর্নামেন্ট ও ট্রেইনিং চ্যানেল</span>
+        </a>
+      </section>
+
+      <!-- Action Buttons -->
+      <section class="cta-column">
+        <a href="https://wa.me/8801820729663?text=হ্যালো%20EaNOBAB,%20আমি%20আপনার%20সাথে%20eFootball%201v1%20ফ্রেন্ডলি%20ম্যাচ%20খেলতে%20চাই।" target="_blank" rel="noopener noreferrer" class="challenge-btn">
+          <i class="fa-solid fa-trophy"></i> 1v1 ফ্রেন্ডলি ম্যাচ চ্যালেঞ্জ পাঠান
+        </a>
+
+        <a href="https://wa.me/8801820729663?text=Hello%20EaNOBAB,%20I%20have%20a%20business%20query." target="_blank" rel="noopener noreferrer" class="wa-btn">
+          <i class="fa-brands fa-whatsapp"></i> স্পনসরশিপ ও সাধারণ যোগাযোগ
+        </a>
+      </section>
+
+      <!-- Discreet Footer with Secret 3-Tap Trigger -->
+      <footer class="footer-wrapper">
+        <span class="secret-trigger-text" id="secretAdminTrigger">© 2026 EaNOBAB | eFootball Creator</span>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- User Announcement Modal -->
+  <div class="popup-backdrop" id="announcementPopup">
+    <div class="popup-box">
+      <div class="popup-head">
+        <span><i class="fa-solid fa-bullhorn text-warning"></i> <span id="popTitleView">ঘোষণা</span></span>
+        <button class="popup-x" onclick="dismissPopup()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="popup-content">
+        <div class="popup-media-wrap" id="popMediaSlot" style="display: none;"></div>
+        <p class="popup-desc" id="popTextView">...</p>
+        <a id="popLinkBtn" href="#" target="_blank" rel="noopener noreferrer" class="popup-cta-btn" style="display: none;">
+          <span id="popBtnLabel">বিস্তারিত দেখুন</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Modal (5 Categorized Tabs) -->
+  <div class="admin-backdrop" id="adminModalShell">
+    <div class="admin-frame">
+      <div class="admin-header">
+        <h3><i class="fa-solid fa-sliders"></i> EaNOBAB Dashboard</h3>
+        <i class="fa-solid fa-xmark" style="cursor: pointer; color: #94a3b8;" onclick="dismissAdmin()"></i>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="admin-tabs-nav">
+        <button class="tab-pill active" onclick="activateAdminTab('tabLive')">
+          <i class="fa-solid fa-tower-broadcast"></i>
+          <span>লাইভ</span>
+        </button>
+        <button class="tab-pill" onclick="activateAdminTab('tabGift')">
+          <i class="fa-solid fa-gift"></i>
+          <span>গিফট কোড</span>
+        </button>
+        <button class="tab-pill" onclick="activateAdminTab('tabBuild')">
+          <i class="fa-solid fa-futbol"></i>
+          <span>ট্রেইনিং</span>
+        </button>
+        <button class="tab-pill" onclick="activateAdminTab('tabNotice')">
+          <i class="fa-solid fa-bullhorn"></i>
+          <span>পপ-আপ</span>
+        </button>
+        <button class="tab-pill" onclick="activateAdminTab('tabMedia')">
+          <i class="fa-brands fa-youtube"></i>
+          <span>ভিডিও</span>
+        </button>
+      </nav>
+
+      <!-- Tabs Area -->
+      <div class="admin-body">
+        
+        <!-- Tab 1: Live & Stats -->
+        <div class="tab-section active" id="tabLive">
+          <div class="toggle-row">
+            <span>🔴 লাইভ স্ট্রিম স্ট্যাটাস চালু রাখুন:</span>
+            <input type="checkbox" id="admLiveSwitch" style="width: 18px; height: 18px; cursor: pointer;">
+          </div>
+          <div class="field-group">
+            <label>লাইভ স্ট্রিমের ডিরেক্ট লিংক:</label>
+            <input type="text" id="admLiveUrl" class="field-control" placeholder="https://youtube.com/live/xxx">
+          </div>
+          <div class="field-group">
+            <label>ওয়েলকাম নোটিশ টেক্সট:</label>
+            <textarea id="admNoticeText" class="field-control" rows="2"></textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div class="field-group">
+              <label>র‍্যাঙ্ক (যেমন: DIV 1):</label>
+              <input type="text" id="admRank" class="field-control">
+            </div>
+            <div class="field-group">
+              <label>ফলোয়ার সংখ্যা:</label>
+              <input type="text" id="admSubs" class="field-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Gift Code -->
+        <div class="tab-section" id="tabGift">
+          <div class="toggle-row">
+            <span>গিফট কোড সেকশন প্রদর্শন করুন:</span>
+            <input type="checkbox" id="admGiftEnable" style="width: 18px; height: 18px; cursor: pointer;">
+          </div>
+          <div class="field-group">
+            <label>রিডিম কোড:</label>
+            <input type="text" id="admGiftCode" class="field-control code-style">
+          </div>
+          <div class="field-group">
+            <label>রিওয়ার্ড বা অফার বিবরণ:</label>
+            <input type="text" id="admGiftReward" class="field-control">
+          </div>
+          <div class="field-group">
+            <label>ট্যাগ ব্যাজ টেক্সট:</label>
+            <input type="text" id="admGiftTag" class="field-control">
+          </div>
+          <div class="field-group">
+            <label>মেয়াদ বা নোট:</label>
+            <input type="text" id="admGiftNote" class="field-control">
+          </div>
+        </div>
+
+        <!-- Tab 3: Meta Training Build -->
+        <div class="tab-section" id="tabBuild">
+          <div class="toggle-row">
+            <span>প্লেয়ার ট্রেইনিং সেকশন প্রদর্শন করুন:</span>
+            <input type="checkbox" id="admBuildEnable" style="width: 18px; height: 18px; cursor: pointer;">
+          </div>
+          <div class="field-group">
+            <label>প্লেয়ারের নাম:</label>
+            <input type="text" id="admPlayerName" class="field-control">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+            <div class="field-group">
+              <label>পজিশন:</label>
+              <input type="text" id="admPlayerPos" class="field-control">
+            </div>
+            <div class="field-group">
+              <label>কার্ড টাইপ:</label>
+              <input type="text" id="admPlayerCardType" class="field-control">
+            </div>
+            <div class="field-group">
+              <label>রেটিং:</label>
+              <input type="text" id="admPlayerRating" class="field-control">
+            </div>
+          </div>
+          <div class="field-group">
+            <label>পয়েন্ট ব্রেকডাউন:</label>
+            <textarea id="admPlayerPoints" class="field-control code-style" rows="3"></textarea>
+          </div>
+          <div class="field-group">
+            <label>প্রয়োজনীয় স্কিলস:</label>
+            <input type="text" id="admPlayerSkills" class="field-control">
+          </div>
+          <div class="field-group">
+            <label>কার্ডের ছবি / HTML কোড:</label>
+            <textarea id="admPlayerHtml" class="field-control code-style" rows="2" placeholder='<img src="..." alt="player">'></textarea>
+          </div>
+          <div class="toggle-row">
+            <span>টেলিগ্রাম চ্যানেল ইনভাইট ব্যানার প্রদর্শন করুন:</span>
+            <input type="checkbox" id="admTgBannerEnable" style="width: 18px; height: 18px; cursor: pointer;">
+          </div>
+        </div>
+
+        <!-- Tab 4: Announcement Popup -->
+        <div class="tab-section" id="tabNotice">
+          <div class="toggle-row">
+            <span>পপ-আপ সক্রিয় রাখুন:</span>
+            <input type="checkbox" id="admPopEnable" style="width: 18px; height: 18px; cursor: pointer;">
+          </div>
+          <div class="field-group">
+            <label>পপ-আপ শিরোনাম:</label>
+            <input type="text" id="admPopTitle" class="field-control">
+          </div>
+          <div class="field-group">
+            <label>পপ-আপ বিস্তারিত টেক্সট:</label>
+            <textarea id="admPopText" class="field-control" rows="2"></textarea>
+          </div>
+          <div class="field-group">
+            <label>ব্যানার HTML কোড (Image):</label>
+            <textarea id="admPopHtml" class="field-control code-style" rows="2"></textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div class="field-group">
+              <label>বাটনের নাম:</label>
+              <input type="text" id="admPopBtnLabel" class="field-control">
+            </div>
+            <div class="field-group">
+              <label>বাটনের লিংক:</label>
+              <input type="text" id="admPopBtnUrl" class="field-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Videos -->
+        <div class="tab-section" id="tabMedia">
+          <div class="field-group">
+            <label>ইউটিউব ভিডিও লিংকসমূহ (কমা ',' দিয়ে আলাদা করুন):</label>
+            <textarea id="admVideoLinks" class="field-control code-style" rows="4" placeholder="https://youtu.be/xxx, https://youtu.be/yyy"></textarea>
+            <span style="font-size: 11px; color: var(--text-muted); display: block; margin-top: 4px;">
+              ৩ সেকেন্ড পর পর অটো-স্ক্রল হবে। ইউজার ব্যাক বা ফরোয়ার্ডও করতে পারবে।
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Footer -->
+      <div class="admin-foot">
+        <button class="btn-close" onclick="dismissAdmin()">বাতিল</button>
+        <button class="btn-save" onclick="commitAdminSettings()">
+          <i class="fa-solid fa-floppy-disk"></i> পরিবর্তনসমূহ সেভ করুন
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-pill" id="actionToast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastNoticeText">কপি করা হয়েছে!</span>
+  </div>
+
+  <!-- Client Script Logic -->
+  <script>
+    const SECRET_PIN = "nobab123";
+
+    let activeVideos = [
+      "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+      "https://www.youtube.com/watch?v=3JZ_D3ELwOQ",
+      "https://www.youtube.com/watch?v=2Vv-BfVoq4g"
+    ];
+
+    let currentSlide = 0;
+    let carouselInterval = null;
+
+    // Toast Helper
+    function triggerToast(text) {
+      const toast = document.getElementById("actionToast");
+      document.getElementById("toastNoticeText").innerText = text;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    // 1-Click Gift Code Copy
+    function copyGiftCode() {
+      const code = document.getElementById("uiGiftCode").innerText;
+      const el = document.createElement("textarea");
+      el.value = code;
+      document.body.appendChild(el);
+      el.select();
+      try {
+        document.execCommand("copy");
+        triggerToast("গিফট কোড কপি করা হয়েছে: " + code);
+      } catch (e) {
+        triggerToast("ম্যানুয়ালি কোডটি কপি করুন!");
+      }
+      document.body.removeChild(el);
+    }
+
+    // Extract YouTube ID
+    function getYoutubeId(link) {
+      if (!link) return "";
+      const reg = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = link.trim().match(reg);
+      return (match && match[2].length === 11) ? match[2] : link.trim();
+    }
+
+    // Carousel Rendering
+    function buildCarousel() {
+      const track = document.getElementById("carouselTrack");
+      const dots = document.getElementById("carouselDots");
+      track.innerHTML = "";
+      dots.innerHTML = "";
+
+      activeVideos.forEach((vUrl, i) => {
+        const id = getYoutubeId(vUrl);
+        if (!id) return;
+
+        const slide = document.createElement("div");
+        slide.className = "carousel-slide";
+        slide.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?enablejsapi=1" allowfullscreen loading="lazy"></iframe>`;
+        track.appendChild(slide);
+
+        const dot = document.createElement("div");
+        dot.className = `dot-item ${i === 0 ? "active" : ""}`;
+        dot.onclick = () => selectSlide(i);
+        dots.appendChild(dot);
+      });
+
+      currentSlide = 0;
+      refreshSlidePosition();
+      startSlideLoop();
+    }
+
+    function refreshSlidePosition() {
+      const track = document.getElementById("carouselTrack");
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+      document.querySelectorAll(".dot-item").forEach((d, idx) => {
+        d.classList.toggle("active", idx === currentSlide);
+      });
+    }
+
+    function cycleSlide(dir) {
+      const total = activeVideos.length;
+      if (total <= 1) return;
+      currentSlide = (currentSlide + dir + total) % total;
+      refreshSlidePosition();
+      restartSlideLoop();
+    }
+
+    function selectSlide(idx) {
+      currentSlide = idx;
+      refreshSlidePosition();
+      restartSlideLoop();
+    }
+
+    function startSlideLoop() {
+      haltSlideLoop();
+      if (activeVideos.length > 1) {
+        carouselInterval = setInterval(() => cycleSlide(1), 3000);
+      }
+    }
+
+    function haltSlideLoop() {
+      if (carouselInterval) clearInterval(carouselInterval);
+    }
+
+    function restartSlideLoop() {
+      haltSlideLoop();
+      startSlideLoop();
+    }
+
+    const wrapper = document.getElementById("carouselWrapper");
+    wrapper.addEventListener("mouseenter", haltSlideLoop);
+    wrapper.addEventListener("mouseleave", startSlideLoop);
+
+    // Load Data to UI
+    function initPortalData() {
+      const isLive = localStorage.getItem("ea_live") === "true";
+      const liveLink = localStorage.getItem("ea_live_url") || "https://youtube.com/@eanobab/live";
+      const storedVideos = localStorage.getItem("ea_videos");
+      const notice = localStorage.getItem("ea_msg");
+      const rank = localStorage.getItem("ea_rank");
+      const subs = localStorage.getItem("ea_subs");
+
+      // Live Stream Badge
+      const badge = document.getElementById("streamBadge");
+      const text = document.getElementById("streamStatusText");
+      const link = document.getElementById("streamBadgeLink");
+
+      if (isLive) {
+        badge.classList.add("live");
+        text.innerText = "🔴 LIVE NOW";
+        link.href = liveLink;
+        link.style.pointerEvents = "auto";
+      } else {
+        badge.classList.remove("live");
+        text.innerText = "ACTIVE";
+        link.href = "javascript:void(0)";
+        link.style.pointerEvents = "none";
+      }
+
+      // Gift Code
+      const giftOn = localStorage.getItem("ea_gift_enable") !== "false";
+      const giftCard = document.getElementById("giftCodeSection");
+      if (giftOn) {
+        giftCard.style.display = "block";
+        document.getElementById("uiGiftCode").innerText = localStorage.getItem("ea_gift_code") || "EFOOTBALL2026GOAL";
+        document.getElementById("uiGiftReward").querySelector("span").innerText = localStorage.getItem("ea_gift_reward") || "1000 Coins / Deal";
+        document.getElementById("uiGiftTag").innerText = localStorage.getItem("ea_gift_tag") || "REDEEM CODE";
+        document.getElementById("uiGiftNote").innerText = localStorage.getItem("ea_gift_note") || "সীমিত সময়ের জন্য প্রযোজ্য!";
+      } else {
+        giftCard.style.display = "none";
+      }
+
+      // Player Training
+      const playerOn = localStorage.getItem("ea_player_enable") !== "false";
+      const playerCard = document.getElementById("playerShowcaseSection");
+      if (playerOn) {
+        playerCard.style.display = "block";
+        document.getElementById("uiPlayerName").innerText = localStorage.getItem("ea_player_name") || "Lionel Messi";
+        document.getElementById("uiPlayerPos").innerText = localStorage.getItem("ea_player_pos") || "CF";
+        document.getElementById("uiPlayerCardType").innerText = localStorage.getItem("ea_player_cardtype") || "EPIC";
+        document.getElementById("uiPlayerRating").innerText = localStorage.getItem("ea_player_rating") || "104";
+        document.getElementById("uiPlayerPoints").innerText = localStorage.getItem("ea_player_points") || "Shooting: 4 | Passing: 2 | Dribbling: 8\nDexterity: 8 | Lower Body: 8";
+        document.getElementById("uiPlayerSkills").innerText = localStorage.getItem("ea_player_skills") || "Double Touch, Sole Control, One-touch Pass";
+
+        const playerRaw = localStorage.getItem("ea_player_html") || "";
+        const photoSlot = document.getElementById("uiPlayerMediaBox");
+        if (playerRaw.trim() !== "") {
+          photoSlot.innerHTML = playerRaw;
+        } else {
+          photoSlot.innerHTML = '<i class="fa-solid fa-user-shield" style="font-size: 28px; color: #475569;"></i>';
+        }
+
+        const tgBannerOn = localStorage.getItem("ea_tg_banner_enable") !== "false";
+        document.getElementById("tgInviteBanner").style.display = tgBannerOn ? "flex" : "none";
+      } else {
+        playerCard.style.display = "none";
+      }
+
+      // Videos
+      if (storedVideos) {
+        const parsed = storedVideos.split(",").map(s => s.trim()).filter(Boolean);
+        if (parsed.length > 0) activeVideos = parsed;
+      }
+      buildCarousel();
+
+      // Stats & Notice
+      if (notice) document.getElementById("portalNotice").innerText = notice;
+      if (rank) document.getElementById("statRank").innerText = rank;
+      if (subs) document.getElementById("statSubs").innerText = subs;
+
+      checkPopupDisplay();
+    }
+
+    // Announcement Popup Check
+    function checkPopupDisplay() {
+      const popEnabled = localStorage.getItem("ea_pop_enable") === "true";
+      const dismissed = sessionStorage.getItem("ea_pop_dismissed") === "true";
+
+      if (popEnabled && !dismissed) {
+        document.getElementById("popTitleView").innerText = localStorage.getItem("ea_pop_title") || "ঘোষণা";
+        document.getElementById("popTextView").innerText = localStorage.getItem("ea_pop_text") || "EaNOBAB পোর্টালে স্বাগতম!";
+
+        const html = localStorage.getItem("ea_pop_html") || "";
+        const slot = document.getElementById("popMediaSlot");
+        if (html.trim() !== "") {
+          slot.innerHTML = html;
+          slot.style.display = "block";
+        } else {
+          slot.innerHTML = "";
+          slot.style.display = "none";
+        }
+
+        const btnLabel = localStorage.getItem("ea_pop_btn_label") || "";
+        const btnUrl = localStorage.getItem("ea_pop_btn_url") || "";
+        const cta = document.getElementById("popLinkBtn");
+        if (btnLabel.trim() !== "" && btnUrl.trim() !== "") {
+          cta.href = btnUrl;
+          document.getElementById("popBtnLabel").innerText = btnLabel;
+          cta.style.display = "flex";
+        } else {
+          cta.style.display = "none";
+        }
+
+        setTimeout(() => {
+          document.getElementById("announcementPopup").style.display = "flex";
+        }, 800);
+      }
+    }
+
+    function dismissPopup() {
+      document.getElementById("announcementPopup").style.display = "none";
+      sessionStorage.setItem("ea_pop_dismissed", "true");
+    }
+
+    // Admin Tab Navigation
+    function activateAdminTab(targetTabId) {
+      document.querySelectorAll(".tab-pill").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
+
+      const target = document.getElementById(targetTabId);
+      if (target) target.classList.add("active");
+
+      const pills = document.querySelectorAll(".tab-pill");
+      if (targetTabId === "tabLive") pills[0].classList.add("active");
+      if (targetTabId === "tabGift") pills[1].classList.add("active");
+      if (targetTabId === "tabBuild") pills[2].classList.add("active");
+      if (targetTabId === "tabNotice") pills[3].classList.add("active");
+      if (targetTabId === "tabMedia") pills[4].classList.add("active");
+    }
+
+    // Secret 3-Tap Trigger on Footer Text
+    let tapCounter = 0;
+    let tapClock = null;
+
+    document.getElementById("secretAdminTrigger").addEventListener("click", () => {
+      tapCounter++;
+      clearTimeout(tapClock);
+      tapClock = setTimeout(() => { tapCounter = 0; }, 550);
+
+      if (tapCounter >= 3) {
+        tapCounter = 0;
+        launchAdmin();
+      }
+    });
+
+    function launchAdmin() {
+      const pin = prompt("গোপন এডমিন পাসওয়ার্ড দিন:");
+      if (pin === SECRET_PIN) {
+        document.getElementById("adminModalShell").style.display = "flex";
+        activateAdminTab("tabLive");
+
+        // Populate fields
+        document.getElementById("admLiveSwitch").checked = localStorage.getItem("ea_live") === "true";
+        document.getElementById("admLiveUrl").value = localStorage.getItem("ea_live_url") || "";
+        document.getElementById("admNoticeText").value = document.getElementById("portalNotice").innerText;
+        document.getElementById("admRank").value = document.getElementById("statRank").innerText;
+        document.getElementById("admSubs").value = document.getElementById("statSubs").innerText;
+
+        document.getElementById("admGiftEnable").checked = localStorage.getItem("ea_gift_enable") !== "false";
+        document.getElementById("admGiftCode").value = localStorage.getItem("ea_gift_code") || "EFOOTBALL2026GOAL";
+        document.getElementById("admGiftReward").value = localStorage.getItem("ea_gift_reward") || "1000 Coins / Deal";
+        document.getElementById("admGiftTag").value = localStorage.getItem("ea_gift_tag") || "REDEEM CODE";
+        document.getElementById("admGiftNote").value = localStorage.getItem("ea_gift_note") || "সীমিত সময়ের জন্য প্রযোজ্য!";
+
+        document.getElementById("admBuildEnable").checked = localStorage.getItem("ea_player_enable") !== "false";
+        document.getElementById("admPlayerName").value = localStorage.getItem("ea_player_name") || "Lionel Messi";
+        document.getElementById("admPlayerPos").value = localStorage.getItem("ea_player_pos") || "CF";
+        document.getElementById("admPlayerCardType").value = localStorage.getItem("ea_player_cardtype") || "EPIC";
+        document.getElementById("admPlayerRating").value = localStorage.getItem("ea_player_rating") || "104";
+        document.getElementById("admPlayerPoints").value = localStorage.getItem("ea_player_points") || "Shooting: 4 | Passing: 2 | Dribbling: 8\nDexterity: 8 | Lower Body: 8";
+        document.getElementById("admPlayerSkills").value = localStorage.getItem("ea_player_skills") || "Double Touch, Sole Control, One-touch Pass";
+        document.getElementById("admPlayerHtml").value = localStorage.getItem("ea_player_html") || "";
+        document.getElementById("admTgBannerEnable").checked = localStorage.getItem("ea_tg_banner_enable") !== "false";
+
+        document.getElementById("admPopEnable").checked = localStorage.getItem("ea_pop_enable") === "true";
+        document.getElementById("admPopTitle").value = localStorage.getItem("ea_pop_title") || "";
+        document.getElementById("admPopText").value = localStorage.getItem("ea_pop_text") || "";
+        document.getElementById("admPopHtml").value = localStorage.getItem("ea_pop_html") || "";
+        document.getElementById("admPopBtnLabel").value = localStorage.getItem("ea_pop_btn_label") || "";
+        document.getElementById("admPopBtnUrl").value = localStorage.getItem("ea_pop_btn_url") || "";
+
+        document.getElementById("admVideoLinks").value = activeVideos.join(", ");
+      } else if (pin !== null) {
+        triggerToast("ভুল পাসওয়ার্ড!");
+      }
+    }
+
+    function dismissAdmin() {
+      document.getElementById("adminModalShell").style.display = "none";
+    }
+
+    function commitAdminSettings() {
+      localStorage.setItem("ea_live", document.getElementById("admLiveSwitch").checked);
+      localStorage.setItem("ea_live_url", document.getElementById("admLiveUrl").value.trim());
+      localStorage.setItem("ea_msg", document.getElementById("admNoticeText").value.trim());
+      localStorage.setItem("ea_rank", document.getElementById("admRank").value.trim());
+      localStorage.setItem("ea_subs", document.getElementById("admSubs").value.trim());
+
+      localStorage.setItem("ea_gift_enable", document.getElementById("admGiftEnable").checked);
+      localStorage.setItem("ea_gift_code", document.getElementById("admGiftCode").value.trim());
+      localStorage.setItem("ea_gift_reward", document.getElementById("admGiftReward").value.trim());
+      localStorage.setItem("ea_gift_tag", document.getElementById("admGiftTag").value.trim());
+      localStorage.setItem("ea_gift_note", document.getElementById("admGiftNote").value.trim());
+
+      localStorage.setItem("ea_player_enable", document.getElementById("admBuildEnable").checked);
+      localStorage.setItem("ea_player_name", document.getElementById("admPlayerName").value.trim());
+      localStorage.setItem("ea_player_pos", document.getElementById("admPlayerPos").value.trim());
+      localStorage.setItem("ea_player_cardtype", document.getElementById("admPlayerCardType").value.trim());
+      localStorage.setItem("ea_player_rating", document.getElementById("admPlayerRating").value.trim());
+      localStorage.setItem("ea_player_points", document.getElementById("admPlayerPoints").value.trim());
+      localStorage.setItem("ea_player_skills", document.getElementById("admPlayerSkills").value.trim());
+      localStorage.setItem("ea_player_html", document.getElementById("admPlayerHtml").value.trim());
+      localStorage.setItem("ea_tg_banner_enable", document.getElementById("admTgBannerEnable").checked);
+
+      localStorage.setItem("ea_pop_enable", document.getElementById("admPopEnable").checked);
+      localStorage.setItem("ea_pop_title", document.getElementById("admPopTitle").value.trim());
+      localStorage.setItem("ea_pop_text", document.getElementById("admPopText").value.trim());
+      localStorage.setItem("ea_pop_html", document.getElementById("admPopHtml").value.trim());
+      localStorage.setItem("ea_pop_btn_label", document.getElementById("admPopBtnLabel").value.trim());
+      localStorage.setItem("ea_pop_btn_url", document.getElementById("admPopBtnUrl").value.trim());
+
+      const rawV = document.getElementById("admVideoLinks").value.trim();
+      if (rawV) localStorage.setItem("ea_videos", rawV);
+
+      sessionStorage.removeItem("ea_pop_dismissed");
+
+      initPortalData();
+      dismissAdmin();
+      triggerToast("সব সেটিংস সফলভাবে আপডেট হয়েছে!");
+    }
+
+    window.onload = initPortalData;
+  </script>
+</body>
+</html>
+```
+
+---
+
+### যা যা আরও সুশৃঙ্খল ও মার্জিত করা হয়েছে:
+1. **ভিজ্যুয়াল হায়ারার্কি ও ক্ল্যাটার-ফ্রি স্পেসিং:**
+   * প্রতিটি সেকশনকে আধুনিক কার্ড বর্ডারে (১৮-২৬px বর্ডার রেডিয়াস) সুশৃঙ্খলভাবে সাজানো হয়েছে, ফলে অতিরিক্ত আঁটসাঁট বা এলোমেলো মনে হবে না।
+   * নিয়ন অ্যাকসেন্ট কালার (Cyan `#00f2fe`, Violet `#7928ca`, Pink `#ec4899`, Gold `#facc15`) ব্যবহার করে আন্তর্জাতিক মানের প্রিমিয়াম এস্পোর্টস লুক দেওয়া হয়েছে।
+
+2. **কনটেন্ট ফ্লো ও ব্র্যান্ডিং:**
+   * **টপ প্রোফাইল:** কভার ব্যানার, এনিমেটেড রোটেটিং আউটার গ্লোযুক্ত লোগো এবং সরাসরি লিংকযুক্ত লাইভ স্ট্যাটাস ব্যাজ (`🔴 LIVE NOW` / `ACTIVE`)।
+   * **স্ট্যাটস বার:** ৩টি পরিষ্কার বক্সে Rank, Followers ও Events সংখ্যা।
+   * **সক্রিয় গিফট কোড কার্ড:** স্পষ্ট রিডিম কোড, ওয়ান-ট্যাপ কপি বাটন এবং সরাসরি Konami পোর্টালে যাওয়ার বোতাম।
+   * **মেটা ট্রেইনিং ও টেলিগ্রাম ইনভাইট ব্যানার:** প্লেয়ার কার্ডের নিচেই পরিষ্কারভাবে লেখা ব্যানার দেওয়া হয়েছে যাতে সবাই বুঝতে পারে যে প্রতিদিনের সব কার্ডের ট্রেইনিং পাওয়ার জন্য টেলিগ্রামে জয়েন হওয়া প্রয়োজন।
+   * **ইউটিউব ৩-সেকেন্ড ভিডিও ক্যারোসেল:** অ্যারো বাটন, ডট ইন্ডিকেটর এবং মাউস রাখলে অটো-পজ সুবিধা।
+   * **সোশ্যাল ম্যাট্রিক্স ও হোয়াটসঅ্যাপ অ্যাকশন বাটন:** 1v1 ফ্রেন্ডলি ম্যাচ রিকোয়েস্ট ও সাধারণ যোগাযোগের জন্য আলাদা বাটন।
+
+3. **গোপন অ্যাডমিন প্যানেল:**
+   * পেজের নিচে **`© 2026 EaNOBAB | eFootball Creator`** লেখার ওপর দ্রুত **৩ বার ট্যাপ** করে পিন `nobab123` দিলেই ৫টি ট্যাবে বিন্যস্ত ড্যাশবোর্ড খুলবে।
