@@ -333,9 +333,7 @@
       filter: brightness(1.15);
     }
 
-    /* ====================================================
-       নতুন: লেটেস্ট eFootball আপডেট সেকশন (১০ সেকেন্ড ক্যারোসেল)
-       ==================================================== */
+    /* লেটেস্ট eFootball আপডেট সেকশন (১০ সেকেন্ড ক্যারোসেল) */
     .updates-slider-box {
       margin: 0 20px;
       position: relative;
@@ -443,7 +441,6 @@
       color: #070913;
     }
 
-    /* আপডেট স্লাইডার কন্ট্রোল বোতাম */
     .up-arrow {
       position: absolute;
       top: 50%;
@@ -1001,7 +998,6 @@
       margin-top: 10px;
     }
 
-    /* অ্যাডমিন ডাইনামিক আইটেম কার্ড */
     .admin-dynamic-item {
       background: rgba(255, 255, 255, 0.035);
       border: 1px solid rgba(255, 255, 255, 0.09);
@@ -1112,9 +1108,7 @@
       </div>
     </div>
 
-    <!-- ====================================================
-         নতুন: লেটেস্ট eFootball আপডেট সেকশন (১০ সেকেন্ড পরপর স্ক্রল)
-         ==================================================== -->
+    <!-- লেটেস্ট eFootball আপডেট সেকশন (১০ সেকেন্ড পরপর স্ক্রল) -->
     <div class="module-header">
       <div class="module-title"><i class="fa-solid fa-bolt-lightning" style="color: var(--ef-gold);"></i> লেটেস্ট eFootball আপডেট</div>
     </div>
@@ -1122,9 +1116,7 @@
       <button class="up-arrow prev" onclick="shiftUpdateSlide(-1)" title="আগের আপডেট"><i class="fa-solid fa-chevron-left"></i></button>
       <button class="up-arrow next" onclick="shiftUpdateSlide(1)" title="পরের আপডেট"><i class="fa-solid fa-chevron-right"></i></button>
       
-      <div class="updates-track" id="updatesTrack">
-        <!-- আপডেট কার্ডগুলো ডাইনামিকালি লোড হবে -->
-      </div>
+      <div class="updates-track" id="updatesTrack"></div>
     </div>
     <div class="update-dots-bar" id="updatesDotsTrack"></div>
 
@@ -1168,7 +1160,7 @@
       </a>
     </div>
 
-    <!-- ইউটিউব ভিডিও ক্যারোসেল -->
+    <!-- ইউটিউব ভিডিও ক্যারোসেল (১০ সেকেন্ড পরপর স্ক্রল এবং প্লে থাকলে স্টপ) -->
     <div class="module-header">
       <div class="module-title"><i class="fa-solid fa-play"></i> লেটেস্ট গেমপ্লে ও টিপস ভিডিও</div>
     </div>
@@ -1221,7 +1213,7 @@
         <button class="tab-btn" onclick="switchAdminTab('tab-updates', this)">আপডেট কন্ট্রোল (১০ সে.)</button>
         <button class="tab-btn" onclick="switchAdminTab('tab-popups', this)">পপ-আপ কিউ</button>
         <button class="tab-btn" onclick="switchAdminTab('tab-code', this)">গিফট কোড</button>
-        <button class="tab-btn" onclick="switchAdminTab('tab-video', this)">ভিডিও স্লাইডার</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-video', this)">ভিডিও স্লাইডার (১০ সে.)</button>
         <button class="tab-btn" onclick="switchAdminTab('tab-links', this)">লিংক কন্ট্রোল</button>
       </div>
 
@@ -1289,6 +1281,7 @@
         <div class="field-box">
           <label>ইউটিউব ভিডিও লিংকসমূহ (কমা ',' দিয়ে আলাদা করুন):</label>
           <textarea id="inputVideos" class="field-input" rows="4"></textarea>
+          <span style="font-size: 11px; color: #94a3b8;">প্রতিটি ভিডিও ১০ সেকেন্ড পর পর স্ক্রল হবে। কোনো ভিডিও চালু করলে অটো-স্ক্রল থেমে থাকবে।</span>
         </div>
       </div>
 
@@ -1331,7 +1324,7 @@
   <script>
     const ADMIN_PIN = "nobab123";
 
-    // ডিফল্ট আপডেট লিস্ট (১০ সেকেন্ড পর পর একা একা স্ক্রল হবে)
+    // আপডেট লিস্ট
     let updatesQueue = [
       {
         tag: "NEW PACK",
@@ -1378,6 +1371,7 @@
 
     let currentSlide = 0;
     let autoSlideTimer = null;
+    let isVideoPlaying = false; // ভিডিও চলাকালীন ট্র্যাকিং
 
     function extractVidId(url) {
       if (!url) return "";
@@ -1387,7 +1381,7 @@
     }
 
     // ==========================================
-    // আপডেট স্লাইডার রেন্ডার ও ১০ সেকেন্ড স্ক্রল লজিক
+    // আপডেট স্লাইডার (১০ সেকেন্ড স্ক্রল)
     // ==========================================
     function renderUpdatesSlider() {
       const track = document.getElementById("updatesTrack");
@@ -1466,7 +1460,7 @@
       if (updatesQueue.length > 1) {
         autoUpdateTimer = setInterval(() => {
           shiftUpdateSlide(1);
-        }, 10000); // ঠিক ১০ সেকেন্ড পর পর
+        }, 10000); // ১০ সেকেন্ড
       }
     }
 
@@ -1483,8 +1477,9 @@
     updatesBox.addEventListener("mouseenter", stopAutoUpdateSlide);
     updatesBox.addEventListener("mouseleave", startAutoUpdateSlide);
 
+
     // ==========================================
-    // ইউটিউব ভিডিও স্লাইডার
+    // ইউটিউব ভিডিও স্লাইডার (১০ সেকেন্ড অটো স্ক্রল + স্মার্ট প্লে ডিটেকশন)
     // ==========================================
     function initSlider() {
       const track = document.getElementById("slidesTrack");
@@ -1498,7 +1493,7 @@
 
         const slide = document.createElement("div");
         slide.className = "slide-unit";
-        slide.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?enablejsapi=1" allowfullscreen loading="lazy"></iframe>`;
+        slide.innerHTML = `<iframe id="ytPlayer_${idx}" src="https://www.youtube.com/embed/${id}?enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>`;
         track.appendChild(slide);
 
         const dot = document.createElement("div");
@@ -1534,8 +1529,12 @@
 
     function runAutoSlide() {
       stopAutoSlide();
-      if (videoArray.length > 1) {
-        autoSlideTimer = setInterval(() => { shiftSlide(1); }, 3000);
+      if (videoArray.length > 1 && !isVideoPlaying) {
+        autoSlideTimer = setInterval(() => {
+          if (!isVideoPlaying) {
+            shiftSlide(1);
+          }
+        }, 10000); // ঠিক ১০ সেকেন্ড = 10000ms
       }
     }
 
@@ -1550,7 +1549,31 @@
 
     const sliderBox = document.getElementById("sliderNode");
     sliderBox.addEventListener("mouseenter", stopAutoSlide);
-    sliderBox.addEventListener("mouseleave", runAutoSlide);
+    sliderBox.addEventListener("mouseleave", () => {
+      if (!isVideoPlaying) runAutoSlide();
+    });
+
+    window.addEventListener("message", function(event) {
+      if (event.origin.includes("youtube.com")) {
+        try {
+          const data = JSON.parse(event.data);
+          if (data && data.event === "infoDelivery" && data.info) {
+            if (data.info.playerState === 1) {
+              isVideoPlaying = true;
+              stopAutoSlide();
+            } 
+            else if (data.info.playerState === 0 || data.info.playerState === 2) {
+              isVideoPlaying = false;
+              resetTimer();
+            }
+          }
+        } catch (e) {}
+      }
+    });
+
+    sliderBox.addEventListener("click", function() {
+      stopAutoSlide();
+    });
 
     function copyGiftCode() {
       const code = document.getElementById("giftCodeText").innerText;
@@ -1625,7 +1648,6 @@
       const desc = localStorage.getItem("ea_gift_desc");
       const expiry = localStorage.getItem("ea_gift_expiry");
 
-      // আপডেট কিউ লোড
       const savedUpdates = localStorage.getItem("ea_updates_queue");
       if (savedUpdates) {
         try {
@@ -1635,7 +1657,6 @@
       }
       renderUpdatesSlider();
 
-      // পপ-আপ তালিকা লোড
       const savedPopups = localStorage.getItem("ea_popups_queue");
       if (savedPopups) {
         try {
