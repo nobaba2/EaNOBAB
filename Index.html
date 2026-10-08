@@ -10,6 +10,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Teko:wght@600;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
+  <!-- OneSignal Web Push SDK -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "9514895f-c1b5-4ceb-a173-7dee8cf0b78d",
+      });
+    });
+  </script>
+
   <style>
     :root {
       --ef-cyan: #00f2fe;
@@ -1534,7 +1545,7 @@
           if (!isVideoPlaying) {
             shiftSlide(1);
           }
-        }, 10000); // ঠিক ১০ সেকেন্ড = 10000ms
+        }, 10000);
       }
     }
 
@@ -1968,4 +1979,4 @@
     window.onload = loadPortalData;
   </script>
 </body>
-  </html>
+</html>
