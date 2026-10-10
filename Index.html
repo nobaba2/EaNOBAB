@@ -21,6 +21,31 @@
     });
   </script>
 
+  <!-- Firebase Realtime Database SDK (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBri_Pb0w0IFTdJkugc6CrP9gSw52wTL4g",
+      authDomain: "eanobab.firebaseapp.com",
+      databaseURL: "https://eanobab-default-rtdb.firebaseio.com",
+      projectId: "eanobab",
+      storageBucket: "eanobab.firebasestorage.app",
+      messagingSenderId: "674732901169",
+      appId: "1:674732901169:web:c45f91b5291e2beb21a610"
+    };
+
+    let fbDatabase = null;
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      fbDatabase = firebase.database();
+    } catch(e) {
+      console.error("Firebase Initialization Error:", e);
+    }
+  </script>
+
   <style>
     :root {
       --ef-cyan: #00f2fe;
@@ -1335,6 +1360,126 @@
   <script>
     const ADMIN_PIN = "nobab123";
 
+    // Firebase রিয়েল-টাইম লাইভ ডাটা লিসেনার
+    function initFirebaseClient() {
+      if (fbDatabase) {
+        fbDatabase.ref("portalData").on("value", (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            applyLiveFirebaseData(data);
+          }
+        });
+      }
+    }
+
+    function applyLiveFirebaseData(data) {
+      if (data.isLive !== undefined) localStorage.setItem("ea_live", data.isLive);
+      if (data.liveUrl !== undefined) localStorage.setItem("ea_live_url", data.liveUrl);
+      if (data.notice !== undefined) localStorage.setItem("ea_notice", data.notice);
+      if (data.rank !== undefined) localStorage.setItem("ea_rank", data.rank);
+      if (data.fans !== undefined) localStorage.setItem("ea_fans", data.fans);
+
+      if (data.giftCode !== undefined) localStorage.setItem("ea_gift_code", data.giftCode);
+      if (data.giftDesc !== undefined) localStorage.setItem("ea_gift_desc", data.giftDesc);
+      if (data.giftExpiry !== undefined) localStorage.setItem("ea_gift_expiry", data.giftExpiry);
+
+      if (data.updatesQueue !== undefined) {
+        updatesQueue = data.updatesQueue;
+        localStorage.setItem("ea_updates_queue", JSON.stringify(updatesQueue));
+        renderUpdatesSlider();
+      }
+
+      if (data.popupsQueue !== undefined) {
+        popupsQueue = data.popupsQueue;
+        localStorage.setItem("ea_popups_queue", JSON.stringify(popupsQueue));
+      }
+
+      if (data.links) {
+        if (data.links.yt) localStorage.setItem("ea_yt_url", data.links.yt);
+        if (data.links.fb) localStorage.setItem("ea_fb_url", data.links.fb);
+        if (data.links.ig) localStorage.setItem("ea_ig_url", data.links.ig);
+        if (data.links.tk) localStorage.setItem("ea_tk_url", data.links.tk);
+        if (data.links.tg) localStorage.setItem("ea_tg_url", data.links.tg);
+        if (data.links.group) localStorage.setItem("ea_group_url", data.links.group);
+        if (data.links.wa) localStorage.setItem("ea_wa_contact", data.links.wa);
+      }
+
+      if (data.videos) {
+        localStorage.setItem("ea_videos", data.videos);
+        videoArray = data.videos.split(",").map(v => v.trim()).filter(Boolean);
+        initSlider();
+      }
+
+      refreshUIElements();
+    }
+
+    function refreshUIElements() {
+      const isLive = localStorage.getItem("ea_live") === "true";
+      const liveRaw = localStorage.getItem("ea_live_url") || "";
+      const notice = localStorage.getItem("ea_notice");
+      const rank = localStorage.getItem("ea_rank");
+      const fans = localStorage.getItem("ea_fans");
+
+      const code = localStorage.getItem("ea_gift_code");
+      const desc = localStorage.getItem("ea_gift_desc");
+      const expiry = localStorage.getItem("ea_gift_expiry");
+
+      const ytLink = localStorage.getItem("ea_yt_url") || "https://youtube.com/@eanobab?si=hCmZ6ptMcAK8PedL";
+      const fbLink = localStorage.getItem("ea_fb_url") || "https://www.facebook.com/Eanobaba";
+      const igLink = localStorage.getItem("ea_ig_url") || "https://www.instagram.com/eanobaba?stkn=NGR1cmJ0bWlhYXBx";
+      const tkLink = localStorage.getItem("ea_tk_url") || "https://vm.tiktok.com/ZS9DXjMvGE1UC-Imczq/";
+      const tgLink = localStorage.getItem("ea_tg_url") || "https://t.me/EaNOBAB";
+      const groupLink = localStorage.getItem("ea_group_url") || "https://postimg.cc/VdMmfsqz";
+      let waContact = localStorage.getItem("ea_wa_contact") || "https://wa.me/8801820729663?text=Hello%20EaNOBAB,%20Business%20Query";
+
+      if (waContact && !waContact.startsWith("http")) {
+        waContact = "https://wa.me/" + waContact.replace(/[^0-9]/g, "");
+      }
+
+      if (document.getElementById("ytLink")) document.getElementById("ytLink").href = ytLink;
+      if (document.getElementById("fbLink")) document.getElementById("fbLink").href = fbLink;
+      if (document.getElementById("igLink")) document.getElementById("igLink").href = igLink;
+      if (document.getElementById("tkLink")) document.getElementById("tkLink").href = tkLink;
+      if (document.getElementById("tgLink")) document.getElementById("tgLink").href = tgLink;
+      if (document.getElementById("tgBannerLink")) document.getElementById("tgBannerLink").href = tgLink;
+      if (document.getElementById("waGroupBtn")) document.getElementById("waGroupBtn").href = groupLink;
+      if (document.getElementById("waContactBtn")) document.getElementById("waContactBtn").href = waContact;
+
+      const coverImg = document.getElementById("coverImage");
+      const liveFrame = document.getElementById("liveCoverFrame");
+      const liveBadge = document.getElementById("liveLinkNode");
+      const liveText = document.getElementById("liveTextNode");
+
+      if (isLive && liveRaw) {
+        const liveId = extractVidId(liveRaw);
+        coverImg.style.display = "none";
+        liveFrame.style.display = "block";
+        liveFrame.src = `https://www.youtube.com/embed/${liveId}?autoplay=1&mute=0`;
+        
+        liveBadge.classList.add("live-now");
+        liveText.innerText = "🔴 LIVE NOW";
+        liveBadge.href = liveRaw.startsWith("http") ? liveRaw : `https://youtube.com/watch?v=${liveId}`;
+        liveBadge.style.pointerEvents = "auto";
+      } else {
+        coverImg.style.display = "block";
+        liveFrame.style.display = "none";
+        liveFrame.src = "";
+        
+        liveBadge.classList.remove("live-now");
+        liveText.innerText = "ACTIVE";
+        liveBadge.href = "javascript:void(0)";
+        liveBadge.style.pointerEvents = "none";
+      }
+
+      if (notice) document.getElementById("noticeText").innerText = notice;
+      if (rank) document.getElementById("statRank").innerText = rank;
+      if (fans) document.getElementById("statFans").innerText = fans;
+
+      if (code) document.getElementById("giftCodeText").innerText = code;
+      if (desc) document.getElementById("giftDesc").innerText = desc;
+      if (expiry) document.getElementById("giftExpiry").innerText = expiry;
+    }
+
     // আপডেট লিস্ট
     let updatesQueue = [
       {
@@ -1382,7 +1527,7 @@
 
     let currentSlide = 0;
     let autoSlideTimer = null;
-    let isVideoPlaying = false; // ভিডিও চলাকালীন ট্র্যাকিং
+    let isVideoPlaying = false;
 
     function extractVidId(url) {
       if (!url) return "";
@@ -1391,9 +1536,6 @@
       return (m && m[2].length === 11) ? m[2] : url.trim();
     }
 
-    // ==========================================
-    // আপডেট স্লাইডার (১০ সেকেন্ড স্ক্রল)
-    // ==========================================
     function renderUpdatesSlider() {
       const track = document.getElementById("updatesTrack");
       const dots = document.getElementById("updatesDotsTrack");
@@ -1471,7 +1613,7 @@
       if (updatesQueue.length > 1) {
         autoUpdateTimer = setInterval(() => {
           shiftUpdateSlide(1);
-        }, 10000); // ১০ সেকেন্ড
+        }, 10000);
       }
     }
 
@@ -1488,10 +1630,6 @@
     updatesBox.addEventListener("mouseenter", stopAutoUpdateSlide);
     updatesBox.addEventListener("mouseleave", startAutoUpdateSlide);
 
-
-    // ==========================================
-    // ইউটিউব ভিডিও স্লাইডার (১০ সেকেন্ড অটো স্ক্রল + স্মার্ট প্লে ডিটেকশন)
-    // ==========================================
     function initSlider() {
       const track = document.getElementById("slidesTrack");
       const dots = document.getElementById("dotsTrack");
@@ -1649,16 +1787,6 @@
     }
 
     function loadPortalData() {
-      const isLive = localStorage.getItem("ea_live") === "true";
-      const liveRaw = localStorage.getItem("ea_live_url") || "";
-      const notice = localStorage.getItem("ea_notice");
-      const rank = localStorage.getItem("ea_rank");
-      const fans = localStorage.getItem("ea_fans");
-
-      const code = localStorage.getItem("ea_gift_code");
-      const desc = localStorage.getItem("ea_gift_desc");
-      const expiry = localStorage.getItem("ea_gift_expiry");
-
       const savedUpdates = localStorage.getItem("ea_updates_queue");
       if (savedUpdates) {
         try {
@@ -1676,69 +1804,17 @@
         } catch (e) {}
       }
 
-      const ytLink = localStorage.getItem("ea_yt_url") || "https://youtube.com/@eanobab?si=hCmZ6ptMcAK8PedL";
-      const fbLink = localStorage.getItem("ea_fb_url") || "https://www.facebook.com/Eanobaba";
-      const igLink = localStorage.getItem("ea_ig_url") || "https://www.instagram.com/eanobaba?stkn=NGR1cmJ0bWlhYXBx";
-      const tkLink = localStorage.getItem("ea_tk_url") || "https://vm.tiktok.com/ZS9DXjMvGE1UC-Imczq/";
-      const tgLink = localStorage.getItem("ea_tg_url") || "https://t.me/EaNOBAB";
-      const groupLink = localStorage.getItem("ea_group_url") || "https://postimg.cc/VdMmfsqz";
-      let waContact = localStorage.getItem("ea_wa_contact") || "https://wa.me/8801820729663?text=Hello%20EaNOBAB,%20Business%20Query";
-
-      if (waContact && !waContact.startsWith("http")) {
-        waContact = "https://wa.me/" + waContact.replace(/[^0-9]/g, "");
-      }
-
-      if (document.getElementById("ytLink")) document.getElementById("ytLink").href = ytLink;
-      if (document.getElementById("fbLink")) document.getElementById("fbLink").href = fbLink;
-      if (document.getElementById("igLink")) document.getElementById("igLink").href = igLink;
-      if (document.getElementById("tkLink")) document.getElementById("tkLink").href = tkLink;
-      if (document.getElementById("tgLink")) document.getElementById("tgLink").href = tgLink;
-      if (document.getElementById("tgBannerLink")) document.getElementById("tgBannerLink").href = tgLink;
-      if (document.getElementById("waGroupBtn")) document.getElementById("waGroupBtn").href = groupLink;
-      if (document.getElementById("waContactBtn")) document.getElementById("waContactBtn").href = waContact;
-
       const vids = localStorage.getItem("ea_videos");
-
-      const coverImg = document.getElementById("coverImage");
-      const liveFrame = document.getElementById("liveCoverFrame");
-      const liveBadge = document.getElementById("liveLinkNode");
-      const liveText = document.getElementById("liveTextNode");
-
-      if (isLive && liveRaw) {
-        const liveId = extractVidId(liveRaw);
-        coverImg.style.display = "none";
-        liveFrame.style.display = "block";
-        liveFrame.src = `https://www.youtube.com/embed/${liveId}?autoplay=1&mute=0`;
-        
-        liveBadge.classList.add("live-now");
-        liveText.innerText = "🔴 LIVE NOW";
-        liveBadge.href = liveRaw.startsWith("http") ? liveRaw : `https://youtube.com/watch?v=${liveId}`;
-        liveBadge.style.pointerEvents = "auto";
-      } else {
-        coverImg.style.display = "block";
-        liveFrame.style.display = "none";
-        liveFrame.src = "";
-        
-        liveBadge.classList.remove("live-now");
-        liveText.innerText = "ACTIVE";
-        liveBadge.href = "javascript:void(0)";
-        liveBadge.style.pointerEvents = "none";
-      }
-
-      if (notice) document.getElementById("noticeText").innerText = notice;
-      if (rank) document.getElementById("statRank").innerText = rank;
-      if (fans) document.getElementById("statFans").innerText = fans;
-
-      if (code) document.getElementById("giftCodeText").innerText = code;
-      if (desc) document.getElementById("giftDesc").innerText = desc;
-      if (expiry) document.getElementById("giftExpiry").innerText = expiry;
-
       if (vids) {
         const arr = vids.split(",").map(v => v.trim()).filter(Boolean);
         if (arr.length > 0) videoArray = arr;
       }
       initSlider();
+
+      refreshUIElements();
       triggerPopupQueue();
+
+      initFirebaseClient();
     }
 
     let tapCount = 0;
@@ -1919,11 +1995,17 @@
     }
 
     function saveAllSettings() {
-      localStorage.setItem("ea_live", document.getElementById("inputLiveToggle").checked);
-      localStorage.setItem("ea_live_url", document.getElementById("inputLiveUrl").value.trim());
-      localStorage.setItem("ea_notice", document.getElementById("inputNotice").value.trim());
-      localStorage.setItem("ea_rank", document.getElementById("inputRank").value.trim());
-      localStorage.setItem("ea_fans", document.getElementById("inputFans").value.trim());
+      const isLive = document.getElementById("inputLiveToggle").checked;
+      const liveUrl = document.getElementById("inputLiveUrl").value.trim();
+      const notice = document.getElementById("inputNotice").value.trim();
+      const rank = document.getElementById("inputRank").value.trim();
+      const fans = document.getElementById("inputFans").value.trim();
+
+      localStorage.setItem("ea_live", isLive);
+      localStorage.setItem("ea_live_url", liveUrl);
+      localStorage.setItem("ea_notice", notice);
+      localStorage.setItem("ea_rank", rank);
+      localStorage.setItem("ea_fans", fans);
 
       const updateItems = document.querySelectorAll("#updatesListContainer .admin-dynamic-item");
       const updatedUpdates = [];
@@ -1956,24 +2038,58 @@
       popupsQueue = updatedPopups;
       localStorage.setItem("ea_popups_queue", JSON.stringify(popupsQueue));
 
-      localStorage.setItem("ea_gift_code", document.getElementById("inputGiftCode").value.trim());
-      localStorage.setItem("ea_gift_desc", document.getElementById("inputGiftDesc").value.trim());
-      localStorage.setItem("ea_gift_expiry", document.getElementById("inputGiftExpiry").value.trim());
+      const giftCode = document.getElementById("inputGiftCode").value.trim();
+      const giftDesc = document.getElementById("inputGiftDesc").value.trim();
+      const giftExpiry = document.getElementById("inputGiftExpiry").value.trim();
 
-      localStorage.setItem("ea_yt_url", document.getElementById("inputYtUrl").value.trim());
-      localStorage.setItem("ea_fb_url", document.getElementById("inputFbUrl").value.trim());
-      localStorage.setItem("ea_ig_url", document.getElementById("inputIgUrl").value.trim());
-      localStorage.setItem("ea_tk_url", document.getElementById("inputTkUrl").value.trim());
-      localStorage.setItem("ea_tg_url", document.getElementById("inputTgUrl").value.trim());
-      localStorage.setItem("ea_group_url", document.getElementById("inputGroupUrl").value.trim());
-      localStorage.setItem("ea_wa_contact", document.getElementById("inputWaContactUrl").value.trim());
+      localStorage.setItem("ea_gift_code", giftCode);
+      localStorage.setItem("ea_gift_desc", giftDesc);
+      localStorage.setItem("ea_gift_expiry", giftExpiry);
+
+      const yt = document.getElementById("inputYtUrl").value.trim();
+      const fb = document.getElementById("inputFbUrl").value.trim();
+      const ig = document.getElementById("inputIgUrl").value.trim();
+      const tk = document.getElementById("inputTkUrl").value.trim();
+      const tg = document.getElementById("inputTgUrl").value.trim();
+      const group = document.getElementById("inputGroupUrl").value.trim();
+      const wa = document.getElementById("inputWaContactUrl").value.trim();
+
+      localStorage.setItem("ea_yt_url", yt);
+      localStorage.setItem("ea_fb_url", fb);
+      localStorage.setItem("ea_ig_url", ig);
+      localStorage.setItem("ea_tk_url", tk);
+      localStorage.setItem("ea_tg_url", tg);
+      localStorage.setItem("ea_group_url", group);
+      localStorage.setItem("ea_wa_contact", wa);
 
       const rawVids = document.getElementById("inputVideos").value.trim();
       if (rawVids) localStorage.setItem("ea_videos", rawVids);
 
+      // Firebase-এ সরাসরি রিয়েল-টাইম রাইট
+      if (fbDatabase) {
+        fbDatabase.ref("portalData").set({
+          isLive: isLive,
+          liveUrl: liveUrl,
+          notice: notice,
+          rank: rank,
+          fans: fans,
+          giftCode: giftCode,
+          giftDesc: giftDesc,
+          giftExpiry: giftExpiry,
+          updatesQueue: updatesQueue,
+          popupsQueue: popupsQueue,
+          links: { yt, fb, ig, tk, tg, group, wa },
+          videos: rawVids
+        }).then(() => {
+          console.log("Firebase synced successfully!");
+        }).catch(err => {
+          console.error("Firebase sync error:", err);
+        });
+      }
+
       loadPortalData();
       closeAdmin();
-      alert("সমস্ত আপডেট ও সেটিংস সফলভাবে আপডেট ও সংরক্ষিত হয়েছে!");
+      alert("সমস্ত আপডেট ও সেটিংস সফলভাবে সংরক্ষিত ও লাইভ সিঙ্ক হয়েছে!");
     }
 
     window.onload = loadPortalData;
